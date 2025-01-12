@@ -1,0 +1,97 @@
+<ng-container *ngIf="col.visible" [formGroup]="form">
+    <span *ngIf="col.type == 'string' ">
+        <p-iftalabel>
+            <input 
+                pInputText 
+                [readonly]="col.readonly" 
+                [name]="col.field" 
+                [id]="col.field"
+                [formControlName]="col.field"
+                autocomplete="off" />
+            <label [htmlFor]="col.field">{{ col.header }}</label>
+        </p-iftalabel>
+    </span>
+
+    <span *ngIf="col.type == 'number' ">
+        <p-iftalabel>
+            <p-inputnumber 
+                [name]="col.field" 
+                [id]="col.field"
+                [formControlName]="col.field" 
+                [showButtons]="true"
+                inputId="input_number" 
+                [readonly]="col.readonly"
+                [min]="0"
+                />
+            <label [htmlFor]="col.field">{{ col.header }}</label>
+        </p-iftalabel>
+    </span>
+
+    <span *ngIf="col.type == 'float' ">
+        <p-iftalabel>
+            <p-inputnumber 
+                [formControlName]="col.field" 
+                [name]="col.field" 
+                [id]="col.field" 
+                mode="decimal"
+                [showButtons]="true"
+                inputId="input_number" 
+                [readonly]="col.readonly"
+                [min]="0"
+                />
+            <label [htmlFor]="col.field">{{ col.header }}</label>
+        </p-iftalabel>
+    </span>
+
+    <span *ngIf="col.type == 'boolean' ">
+        <div class="form-check mt-3 mb-4">
+            <p-checkbox 
+                [name]="col.field" 
+                [formControlName]="col.field" 
+                [binary]="true"
+                [id]="col.field"/>
+            <label [htmlFor]="col.field" class="ml-2">{{ col.header }}</label>
+        </div>
+    </span>
+
+    <span *ngIf="col.type == 'dropdown' ">
+
+        <p-iftalabel class="w-full md:w-56">
+            <p-select
+                [options]="selectObject[col.field]"
+                [formControlName]="col.field"
+                [id]="col.field"
+                optionLabel="name" 
+                styleClass="w-full" />
+            <label [htmlFor]="col.field">{{ col.header }}</label>
+        </p-iftalabel>
+    </span>
+
+    <span *ngIf="col.type == 'date' ">
+        <p-iftalabel>
+            <p-datepicker 
+            [formControlName]="col.field" appendTo="body"
+            [name]="col.field" dateFormat="dd-mm-yy" inputId="icon"
+            showIcon 
+            iconDisplay="input" />
+            <label [htmlFor]="col.field">{{ col.header }}</label>
+        </p-iftalabel>
+    </span>
+
+    <span *ngIf="col.type == 'multiselect' ">
+        <p-iftalabel class="w-full md:w-80">
+            <p-multiselect 
+                [options]="multiSelectObject[col.field]"
+                [formControlName]="col.field"
+                [optionLabel]="'name'" 
+                [dataKey]="col.key" 
+                [resetFilterOnHide]="true"
+                [id]="col.field"
+                optionLabel="name" 
+                [filter]="true"
+                styleClass="w-full" />
+            <label [htmlFor]="col.field">{{ col.header }}</label>
+        </p-iftalabel>
+    </span>
+
+</ng-container>

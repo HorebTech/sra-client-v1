@@ -1,0 +1,62 @@
+<div class="layout-breadcrumb-container" *ngIf="userConnected.role != 'Agent'">
+    <nav class="layout-breadcrumb" >
+        <ol>
+            <li>
+                <a routerLink="/dashboard">
+                    <i class="pi pi-home"></i>
+                </a>
+            </li>
+            <ng-template ngFor let-item let-last="last" [ngForOf]="breadcrumbs$ | async">
+                <li><i class="pi pi-angle-right"></i></li>
+                <li><span class="indicateur-texte">{{item.label}}</span></li>
+            </ng-template>
+        </ol>
+    </nav>
+
+    <div class="flex justify-center flex-wrap gap-4" *ngIf="userConnected.role != 'Agent'">
+        <a 
+        pTooltip="Ajoutez ou supprimez ou modifiez les états" tooltipPosition="bottom"
+        routerLink="/dashboard/etats" class="flex flex-column text-left border-right">
+            <div class="text-sm font-bold flex align-items-center">
+                <span class="custom-bg mr-1">
+                    <i class="pi pi-th-large"></i>
+                </span>
+                Gestion des états
+            </div>
+            <span class="text-sm">Parcourir</span>
+        </a>
+
+        <a 
+        pTooltip="Ajoutez ou supprimez ou modifiez les catégories" tooltipPosition="bottom"
+        routerLink="/dashboard/categories" class="flex flex-column text-left border-right">
+            <div class="text-sm font-bold flex align-items-center">
+                <span class="custom-bg mr-1">
+                    <i class="pi pi-folder-open"></i>
+                </span>
+                Gestion des catégories
+            </div>
+            <span class="text-sm">Parcourir</span>
+        </a>
+
+        <a 
+        pTooltip="Ajoutez ou supprimez ou modifiez des marques" tooltipPosition="bottom"
+        routerLink="/dashboard/marque" class="flex flex-column text-left border-right">
+            <div class="text-sm font-bold flex align-items-center">
+                <span class="custom-bg mr-1">
+                    <i class="pi pi-bookmark"></i>
+                </span>
+                Gestion des maques de nos équipements
+            </div>
+            <span class="text-sm">Parcourir</span>
+        </a>
+
+    </div>
+
+    <div class="layout-breadcrumb-buttons">
+        <button pButton pRipple type="button" icon="pi pi-cloud-upload" class="p-button-rounded p-button-text p-button-plain"></button>
+        <button pButton pRipple type="button" icon="pi pi-bookmark" class="p-button-rounded p-button-text p-button-plain"></button>
+        <p-button
+        pTooltip="Déconnexion" tooltipPosition="left"
+        icon="pi pi-power-off" [rounded]="true" [text]="true" (onClick)="onLogout()" />
+    </div>
+</div>

@@ -1,0 +1,551 @@
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+@tailwind base;
+}
+
+@layer tailwind-utilities {
+@tailwind components;
+@tailwind utilities;
+}
+
+/* Order */
+@layer reset, primeng;
+
+/* Reset CSS */
+@layer reset {
+    button,
+    input {
+        /* CSS to Reset */
+    }
+}
+
+@import "primeicons/primeicons.css";
+
+/* You can add global styles to this file, and also import other style files */
+$gutter: 1rem; //for primeflex grid system
+/* Layout */
+@import "./assets/layout/styles/layout/layout.css";
+
+/* PrimeNG */
+@import "../node_modules/primeflex/primeflex.css";
+
+/* Quill Text Editor for p-editor */
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+
+/* Demos */
+@import "./assets/demo/styles/flags/flags.css";
+@import "./assets/demo/styles/badges.css";
+@import "./assets/demo/styles/code.css";
+
+@font-face {
+    font-family: Roboto;
+    src: url(assets/layout/fonts/roboto-v20-latin-ext_latin-regular.woff) format("opentype");
+}
+
+* {
+    font-family: Roboto;
+}
+
+
+body{
+    background: #eeeeee8c;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+}
+
+.center-box-absolute{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.transparent-text {
+    opacity: .6;
+}
+input#password, input#password-connexion, input#password-reset {
+    width: 100%;
+}
+.p-button:disabled {
+    cursor: default;
+    opacity: .2;
+}
+#custom-input-select p-overlay{
+    position: fixed;
+    z-index: 9;
+}
+.not-found-page {
+    height: 100vh;
+    position: relative;
+}
+.canvas-accueil-top {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
+p-floatlabel.p-floatlabel.p-floatlabel-over {
+    width: 100%;
+}
+.canvas-accueil-top canvas {
+    width: 100% !important;
+    opacity: .15;
+}
+.not-found-page .card {
+    width: 375px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.not-found-page .card img {
+    opacity: .5;
+}
+
+.layout-topbar-logo {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin: 35px 0;
+}
+
+.image-profil-role {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.indicateur-texte {
+    font-size: 15px;
+}
+.image-profil-role i {
+    font-size: 40px !important;
+    height: 70px;
+    width: 70px;
+    background: linear-gradient(45deg, #dbdbdb, transparent);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: white;
+}
+.layout-sidebar .layout-menu li.active-menuitem > a {
+    color: black;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0px 1px 10px rgb(255 255 255 / 0%), 0px 4px 5px rgb(0 0 0 / 0%), 0px 2px 4px -1px rgba(0, 0, 0, 0.08);
+    background-color: white;
+    border-radius: 0 6px 6px 0;
+    margin-left: 5px;
+}
+.layout-sidebar .layout-menu li.active-menuitem > a:after {
+    content: "";
+    background: #006fc9;
+    left: 0;
+    top: 50%;
+    height: 65%;
+    width: 4px;
+    position: absolute;
+    transform: translateY(-50%);
+}
+.layout-sidebar .layout-menu li.active-menuitem > a .layout-menuitem-icon {
+    margin-right: 0.5rem;
+    color: black;
+}
+.card {
+    border-radius: 7px !important;
+}
+textarea#commentaire {
+    width: 100%;
+}
+img.layout-topbar-logo-full {
+    filter: brightness(5);
+    height: 40px;
+    width: auto !important;
+}
+span.layout-menuitem-text {
+    color: black;
+}
+.text-blue {
+    color: #792200;
+}
+img.photo-agent {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50px;
+}
+.card {
+    background: white !important;
+}
+.p-drawer-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.image-profil-role img {
+    position: relative;
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    z-index: -1;
+    border-radius: 50%;
+}
+.p-password {
+    width: 100%;
+}
+.p-password-input {
+    width: 100%;
+}
+.image-profil-adminAccueil {
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    object-fit: cover;
+}
+.p-dialog.p-component {
+    position: relative !important;
+}
+#dialogue-user #box-select p-overlay{
+    z-index: 1;
+    position: fixed;
+    width: 100%;
+}
+.date-input .p-datepicker-calendar-container {
+    position: fixed;
+    background: white;
+    box-shadow: 0 1px 1px gray;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.p-datepicker.p-component {
+    width: 100%;
+}
+
+.button-connected {
+     .p-badge-dot{
+        background: #29ff29;
+     }
+}
+
+.petit-photo-profil {
+    object-fit: cover;
+    border-radius: 50px;
+}
+
+.custom-bg {
+    height: 25px;
+    width: 25px;
+    background: #b7b7b7;
+    padding: 5px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.passe-card {
+    width: 350px;
+    display: block;
+    height: 200px;
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #d4d4d4;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.passe-card img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+.passe-card h3 {
+    text-align: center;
+    font-size: 20px;
+    position: relative;
+    left: 15px;
+    color: #7a4500;
+}
+
+.passe-card .passe-content {
+    position: absolute;
+    bottom: 15px;
+    left: 20px;
+}
+
+.passe-card .passe-content p {
+    margin-bottom: 0;
+    font-size: 17px;
+}
+.checker-card button {
+    min-width: initial;
+}
+.p-sidebar .p-sidebar-header {
+    padding: 0.75rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.panne-objet p-button.p-element {
+    margin-bottom: 20px;
+}
+
+.p-sidebar .p-sidebar-header .p-sidebar-close, .p-sidebar .p-sidebar-header .p-sidebar-icon{
+    display: none !important;
+}
+
+webcam.webcam {
+    height: 100% !important;
+    width: 100% !important;
+    display: block;
+    position: relative;
+}
+
+.webcam-wrapper {
+    width: 100% !important;
+    display: block;
+    height: 100%;
+}
+.probleme-technique.pannes {
+    height: 450px;
+}
+.pt-image {
+    height: 100%;
+}
+.pt-image .card {
+    height: 100%;
+}
+.webcam-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.mention-buttons {
+    position: absolute;
+    z-index: 9;
+    color: white;
+    height: 100%;
+    width: 100%;
+}
+.pt-input.card {
+    background: #0000004a !important;
+    color: white;
+}
+.pt-input.card textarea, .pt-input.card .p-inputtext {
+    background: transparent;
+    color: white;
+    border: 1px solid #626262;
+}
+.btn-group {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.pt-image .card {
+    padding: 0;
+    border-radius: 10px;
+}
+.group-skeleton {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .skeleton {
+        width: 100%;
+    }
+}
+p-dialog#objet-panne .p-dialog-content {
+    padding: 0;
+}
+.objet-bloc-poppup .ng-trigger {
+    position: absolute;
+    left: 0 !important;
+}
+.pannes p-select {
+    background: transparent;
+    color: white;
+    border: 1px solid #626262;
+}
+
+.pannes .p-select-list-container {
+    background: transparent !important;
+    color: white;
+}
+.border-right {
+    border-right: 1px solid #cacaca;
+    padding-right: 10px;
+}
+.pannes .p-select-list-container ulm {
+    background: transparent !important;
+    color: white;
+}
+
+@media (max-width: 991px) {
+    .p-sidebar-header .image-profil-checker-photo img {
+        height: 30px !important;
+        width: 30px !important;
+    }
+    .p-sidebar-header span.text-xl,
+    .p-sidebar-header p.font-semibold {
+        font-size: 12px !important;
+    }
+    .design-icon {
+        height: 25px !important;
+        width: 25px !important;
+        font-size: 10px;
+    }
+    nav.layout-breadcrumb {
+        display: none;
+    }
+    .input-date-accueil input {
+        width: 100% !important;
+
+        ::placeholder{
+            opacity: 0;
+        }
+    }
+}
+
+@media (max-width: 767px) {
+    .checker-card {
+        padding: 5% !important;
+    }
+}
+
+.layout-menu-button img {
+    height: 20px;
+}
+.button-head {
+    width: 23px !important;
+    height: 23px !important;
+}
+.layout-menu-button {
+    border: 1px solid transparent !important;
+}
+.custom-label {
+    margin-bottom: 0px;
+    padding-top: 5px;
+}
+.input-select {
+    width: 100%;
+    display: block;
+}
+
+// .input-select .p-dropdown {
+//     width: 100%;
+//     border-radius: 5px;
+// }
+
+// #dialogue-user .p-dialog {
+//     height: 625px;
+// }
+
+// .custom-button {
+//     min-width: 2rem;
+// }
+.image-illustrative img {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 50px;
+}
+img.p-image-preview {
+    height: initial !important;
+    width: initial !important;
+}
+p-iftalabel.p-iftalabel {
+    width: 100%;
+}
+.p-image-preview-indicator {
+    width: 100% !important;
+    border-radius: 50px;
+}
+.input-date-accueil input {
+    width: 400px;
+}
+.input-date-accueil {
+    display: flex;
+    align-items: center;
+}
+.image-illustrative .p-image-preview-mask {
+    width: 100% !important;
+    border-radius: 50px !important;
+}
+.image-illustrative img.p-image-original {
+    height: 100%;
+    width: 100%;
+    border-radius: initial;
+}
+.contenu-empty {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5%;
+}
+
+.contenu-empty h3 {
+    font-size: 20px;
+    color: #c8c8c8;
+}
+.color-blue {
+    color: #00578b;
+}
+// .canvas-accueil-top {
+//     position: absolute;
+//     width: 100%;
+//     left: 0;
+//     bottom: 0;
+// }
+// .canvas-accueil-top canvas {
+//     width: 100% !important;
+//     opacity: .15;
+// }
+
+// .image-profil-adminAccueil {
+//     height: 35px;
+//     width: 35px;
+//     object-fit: cover;
+//     border-radius: 50px;
+// }
+.icon-user {
+    height: 35px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #d3d3d3, transparent);
+    color: #8f8f8f;
+}
+.point-connexion {
+    height: 7px;
+    width: 7px;
+    background: #00ff00;
+    border-radius: 50px;
+    position: absolute;
+    top: 15px;
+}

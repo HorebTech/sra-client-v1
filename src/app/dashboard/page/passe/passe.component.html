@@ -1,0 +1,408 @@
+<p-confirmDialog />
+<div class="card">
+    <p-table 
+    [value]="passes" 
+    dataKey="id"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    #dt #gFilter
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    paginatorPosition="bottom"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['id', 'agent.nom', 'statut.nom', 'dateNettoyage']"
+    selectionMode="single"
+    [expandedRowKeys]="expandedRows" (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)"
+    >
+    <ng-template #caption>
+        <div class="flex justify-content-between">
+            <p-button icon="pi pi-plus" severity="info" label="Ajouter" (onClick)="openSavePasse()" />
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input
+                    pInputText
+                    #myInput
+                    type="text"
+                    (input)="gFilter.filterGlobal(myInput.value, 'contains')"
+                    placeholder="Recherche"
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="width: 5rem"></th>
+                <th>N° du Passe</th>
+                <th>Nom de la femme de chambre</th>
+                <th>Nom de la gouvernante</th>
+                <th>Etat du passe</th>
+                <th>Date de passage</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-passe let-expanded="expanded">
+            <tr>
+                <td>
+                    <p-button type="button" pRipple [pRowToggler]="passe" [text]="true" [rounded]="true" [plain]="true" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                </td>
+                <td>{{ passe.id }}</td>
+                <td>{{ passe.agent.nom }}</td>
+                <td>{{ passe.gouvernante.nom }}</td>
+                <td><p-tag [rounded]="true" [icon]='passe.statut.nom == "Terminé" ? "pi pi-check" : passe.statut.nom == "Nouveau" ? "pi pi-info-circle" : "pi pi-exclamation-triangle"' [severity]='passe.statut.nom == "Terminé" ? "success" : passe.statut.nom == "Nouveau" ? "info" : "warn"' [value]='passe.statut.nom == "Terminé" ? "Terminé" : passe.statut.nom == "Nouveau" ? "Nouveau" : "En cours"' /></td>
+                <td>{{ passe.dateNettoyage }}</td>
+                <td>
+                    <div class="button_action">
+                        <p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="primary" (onClick)="openUpdatePasse(passe)" />
+                        <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deletePasse(passe)" />
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template #rowexpansion let-passe>
+            <tr *ngIf="passe?.nettoyageChoisie?.length">
+                <td colspan="3">
+                  <p-table [value]="passe?.nettoyageChoisie" dataKey="id">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th>Action</th>
+                        <th>Catégorie</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-nettoyageChoisie>
+                      <tr>
+                        <td>{{ nettoyageChoisie.nettoyage?.action || 'Non spécifié' }}</td>
+                        <td>{{ nettoyageChoisie.nettoyage?.categorie?.nom || 'Non spécifié' }}</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </td>
+              </tr>
+            
+                 <tr *ngIf="passe?.chambreChoisie?.length">
+                    <td colspan="6">
+                        <p-table [value]="passe.chambreChoisie" dataKey="id">
+                            <ng-template #header>
+                                <tr>
+                                    <th>Chambres</th>
+                                    <th>Etat</th>
+                                    <th>Heure de début</th>
+                                    <th>Heure de fin</th>
+                                    <th>Durée de nettoyage</th>
+                                    <th>Nombre de pannes</th>
+                                    <th>Nombre d'objets</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-chambreChoisie>
+                                <tr>
+                                    <td>{{ chambreChoisie.chambre.numero }}</td>
+                                    <td><p-tag [rounded]="true" [icon]='chambreChoisie.chambre.statut.nom == "Propre" ? "pi pi-check" : chambreChoisie.chambre.statut.nom == "En cours" ? "pi pi-exclamation-triangle" : "pi pi-info-circle"' [severity]='chambreChoisie.chambre.statut.nom == "Propre" ? "success" : chambreChoisie.chambre.statut.nom == "En cours" ? "warn" : "info"' [value]='chambreChoisie.chambre.statut.nom == "Propre" ? "Propre" : chambreChoisie.chambre.statut.nom == "En cours" ? "En cours de nettoyage" : chambreChoisie.chambre.statut.nom' /></td>
+                                    <td>{{ chambreChoisie.heureDebut }}</td>
+                                    <td>{{ chambreChoisie.heureFin }}</td>
+                                    <td>{{ chambreChoisie.duree }}</td>
+                                    <td><p-tag [rounded]="true" [icon]='chambreChoisie.panne.length == 0 ? "pi pi-check" : "pi pi-exclamation-triangle"' [severity]='chambreChoisie.panne.length == 0 ? "success" : "warn"' [value]='chambreChoisie.panne.length' /></td>
+                                    <td><p-tag [rounded]="true" [icon]='chambreChoisie.objet.length == 0 ? "pi pi-check" : "pi pi-exclamation-triangle"' [severity]='chambreChoisie.objet.length == 0 ? "success" : "warn"' [value]='chambreChoisie.objet.length' /></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </td>
+                </tr>
+                <tr *ngIf="passe?.salleChoisie?.length">
+                    <td colspan="6">
+                        <p-table [value]="passe.salleChoisie" dataKey="id">
+                            <ng-template #header>
+                                <tr>
+                                    <th>Salles</th>
+                                    <th>Etat</th>
+                                    <th>Heure de début</th>
+                                    <th>Heure de fin</th>
+                                    <th>Durée de nettoyage</th>
+                                    <th>Nombre de pannes</th>
+                                    <th>Nombre d'objets</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template #body let-salleChoisie>
+                                <tr>
+                                    <td>{{ salleChoisie.salle.numero }}</td>
+                                    <td><p-tag [rounded]="true" [icon]='salleChoisie.salle.statut.nom == "Propre" ? "pi pi-check" : salleChoisie.salle.statut.nom == "En cours" ? "pi pi-exclamation-triangle" : "pi pi-info-circle"' [severity]='salleChoisie.salle.statut.nom == "Propre" ? "success" : salleChoisie.salle.statut.nom == "En cours" ? "warn" : "info"' [value]='salleChoisie.salle.statut.nom == "Propre" ? "Propre" : salleChoisie.salle.statut.nom == "En cours" ? "En cours de nettoyage" : salleChoisie.salle.statut.nom' /></td>
+                                    <td>{{ salleChoisie.heureDebut }}</td>
+                                    <td>{{ salleChoisie.heureFin }}</td>
+                                    <td>{{ salleChoisie.duree }}</td>
+                                    <td><p-tag [rounded]="true" [icon]='salleChoisie.panne.length == 0 ? "pi pi-check" : "pi pi-exclamation-triangle"' [severity]='salleChoisie.panne.length == 0 ? "success" : "warn"' [value]='salleChoisie.panne.length' /></td>
+                                    <td><p-tag [rounded]="true" [icon]='salleChoisie.objet.length == 0 ? "pi pi-check" : "pi pi-exclamation-triangle"' [severity]='salleChoisie.objet.length == 0 ? "success" : "warn"' [value]='salleChoisie.objet.length' /></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </td>
+                </tr>
+        </ng-template>
+    </p-table>
+    <div *ngIf="passes.length == 0" class="flex justify-content-between align-content-center contenu-empty">
+        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+        <h3 class="p-2 text-center">Aucun passe inscrit pour le moment</h3>
+    </div>
+</div>
+
+
+
+
+<p-dialog
+id="dialogue-user"
+header="{{passeForUpdate?.id ? 'Mise à jour du passe' : 'Création de passe'}}"
+[modal]="true" 
+[(visible)]="openPasseDialog"
+[style]="{ width: '50rem' }" 
+[breakpoints]="{ '1199px': '75vw', '575px': '100%' }" 
+[maximizable]="true"
+>
+
+<form [formGroup]="passeForm" autocomplete="false" novalidate role="form" class="w-full">
+    <p class="">Choisissez les chambres en fonction du statut</p>
+        <p-stepper [value]="1" class="basis-[50rem]" [linear]="true">
+            <p-step-list>
+                <p-step [value]="1"></p-step>
+                <p-step [value]="2"></p-step>
+                <p-step [value]="3"></p-step>
+                <p-step [value]="4"></p-step>
+                <p-step [value]="5"></p-step>
+                <p-step [value]="6"></p-step>
+            </p-step-list>
+            <p-step-panels>
+
+                <p-step-panel [value]="1">
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <p class="text-blue text-xl font-bold leading-4 rounded-md mb-2">Chambres ou Salles à nettoyer</p>
+                        <div class="marge-5px" id="box-select">
+                            <p>Indiquez les n° de Chambres a nettoyer et si celles-ci sont en "Départ" ou en "Recouche". Indiquez aussi le n° de salles à nettoyer.</p>
+                            <ng-container>
+                                <div class="mb-1 mt-3">
+                                    <label>Choisissez les chambres en Départ</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-multiselect 
+                                        variant="filled"
+                                        [filter]="true" filterBy="numero" [options]="chambreDepart" [showClear]="true" placeholder="Sélectionnez des chambres"
+                                        formControlName="depart" class="w-full" inputId="depart" optionLabel="numero" optionValue="numero" styleClass="w-full" />
+                                        <label htmlFor="depart">Chambres en départ</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez les chambres en Départ</small>
+                            </ng-container>
+    
+                            <ng-container>
+                                <div class="mb-1 mt-3">
+                                    <label>Choisissez les chambres en Recouche</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-multiselect 
+                                        variant="filled"
+                                        [filter]="true" filterBy="numero" [showClear]="true" placeholder="Sélectionnez des chambres"
+                                        formControlName="recouche" class="w-full" inputId="recouche" [options]="chambreRecouche" optionLabel="numero" optionValue="numero" styleClass="w-full" />
+                                        <label htmlFor="recouche">Chambres en départ</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez les chambres en Recouche</small>
+                            </ng-container>
+
+                            <ng-container>
+                                <div class="mb-1 mt-3">
+                                    <label>Choisissez les salles</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-multiselect 
+                                        variant="filled"
+                                        [filter]="true" filterBy="numero" [showClear]="true" placeholder="Sélectionnez des salles"
+                                        formControlName="salles" class="w-full" inputId="salle" [options]="salles" optionLabel="numero" optionValue="numero" styleClass="w-full" />
+                                        <label htmlFor="salle">Salles</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez les salles à nettoyer</small>
+                            </ng-container>
+                        </div>
+
+                        <div class="py-2">
+                            <p-button label="Suivant" severity="info" (onClick)="activateCallback(2)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+    
+                <p-step-panel [value]="2">
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <p class="text-blue text-xl font-bold leading-4 rounded-md mb-2">Travaux journaliers</p>
+                        <div class="marge-5px" id="box-select">
+                            <ng-container>
+                                <p>Sélectionnez, parmi les différentes tâches affichées, celles qui seront effectuées comme <b>travaux journaliers</b>. Vous pouvez tout cocher pour prendre en considération toutes les tâches. </p>
+                                <p>Travaux journaliers devant être appliqués à l'ensemble des chambres</p>
+                                <div class="mb-1 mt-3">
+                                    <label>Sélectionnez les différentes tâches</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-multiselect 
+                                        variant="filled"
+                                        [filter]="true" filterBy="action" [showClear]="true" placeholder="Sélectionnez des tâches"
+                                        formControlName="travauxjournaliers" class="w-full" inputId="travauxjournaliers" [options]="travauxJournaliers" optionLabel="action" optionValue="action" styleClass="w-full" />
+                                        <label htmlFor="travauxjournaliers">Tavaux journaliers</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez les différentes tâches</small>
+                            </ng-container>
+                        </div>
+                        <div class="flex py-6 gap-2">
+                            <p-button label="Précédent" severity="secondary" (onClick)="activateCallback(1)" />
+                            <p-button label="Suivant" severity="info" (onClick)="activateCallback(3)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+    
+                <p-step-panel [value]="3">
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <p class="text-blue text-xl font-bold leading-4 rounded-md mb-2">Auto contrôle à réaliser</p>
+                        <div class="marge-5px" id="box-select">
+                            <ng-container>
+                                <p>Sélectionnez, parmi les différentes tâches affichées, celles qui seront effectuées comme <b>Auto contrôle à réaliser</b>. Vous pouvez tout cocher pour prendre en considération toutes les tâches. </p>
+                                <div class="mb-1 mt-3">
+                                    <label>Sélectionnez les différentes actions</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-multiselect 
+                                        variant="filled"
+                                        [filter]="true" filterBy="nom" [showClear]="true" placeholder="Sélectionnez des actions"
+                                        formControlName="autocontrole" class="w-full" inputId="autocontrole" [options]="autoControle" optionLabel="action" optionValue="action" styleClass="w-full" />
+                                        <label htmlFor="autocontrole">Auto contôrle à réaliser</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez les différentes actions</small>
+                            </ng-container>
+                        </div>
+                        <div class="flex py-6 gap-2">
+                            <p-button label="Précédent" severity="secondary" (onClick)="activateCallback(2)" />
+                            <p-button label="Suivant" severity="info" (onClick)="activateCallback(4)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+
+                <p-step-panel  [value]="4">
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <p class="text-blue text-xl font-bold leading-4 rounded-md mb-2">Petit Ponctuel</p>
+                        <div class="marge-5px" id="box-select">
+                            <ng-container>
+                                <p>Sélectionnez, parmi les différentes tâches affichées, celles qui seront effectuées comme <b>Petit Ponctuel du Jour</b>. Vous pouvez tout cocher pour prendre en considération toutes les tâches. </p>
+                                <p>Indiquez le(s) petit(s) ponctuel(s) du jour, qui sera appliqué à l'ensemble des chambres listées</p>
+                                <div class="mb-1 mt-3">
+                                    <label>Sélectionnez les différentes actions</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-multiselect 
+                                        [filter]="true" filterBy="action" [showClear]="true" placeholder="Choisissez le ou les petits ponctuels"
+                                        formControlName="petitponctuel" class="w-full" inputId="petitponctuel" [options]="petitPonctuel" optionLabel="action" optionValue="action" styleClass="w-full" />
+                                        <label htmlFor="petitponctuel">Petits ponctuels du jour</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez les petits ponctuels du jour</small>
+                            </ng-container>
+                        </div>
+                        <div class="flex py-6 gap-2">
+                            <p-button label="Précédent" severity="secondary" (onClick)="activateCallback(3)" />
+                            <p-button label="Suivant" severity="info" (onClick)="activateCallback(5)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+
+                <p-step-panel [value]="5">
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <p class="text-blue text-xl font-bold leading-4 rounded-md mb-2">Nettoyage Périodique</p>
+                        <div class="marge-5px" id="box-select">
+                            <ng-container>
+                                <p>Sélectionnez, parmi les différentes actions affichées, celles qui seront effectuées comme <b>Nettoyage périodique</b>. Vous pouvez tout cocher pour prendre en considération toutes les actions. </p>
+                                <p>Indiquez les actions liées aux nettoyages périodiques planifiés</p>
+                                <div class="mb-1 mt-3">
+                                    <label>Sélectionnez Les nettoyages périodiques</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-multiselect 
+                                        [filter]="true" filterBy="action" [showClear]="true" placeholder="Choisissez une ou plusieurs actions"
+                                        formControlName="nettoyageperiodique" class="w-full" inputId="nettoyageperiodique" [options]="nettoyagePeriodique" optionLabel="action" optionValue="action" styleClass="w-full" />
+                                        <label htmlFor="nettoyageperiodique">Nettoyages périodiques</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez les nettoyages périodiques</small>
+                            </ng-container>
+                        </div>
+                        <div class="flex py-6 gap-2">
+                            <p-button label="Précédent" severity="secondary" (onClick)="activateCallback(4)" />
+                            <p-button label="Suivant" severity="info" (onClick)="activateCallback(6)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+
+                <p-step-panel [value]="6">
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <p class="text-blue text-xl font-bold leading-4 rounded-md mb-2">Agent et Date de nettoyage</p>
+                        <div class="marge-5px">
+                            <ng-container>
+                                <p>Sélectionnez, parmi les différents agents celui à qui sera attribué le passe en cours. </p>
+                                <div class="mb-1 mt-3">
+                                    <label>Sélectionnez un agent de chambre</label>
+                                </div>
+                                <div class="w-full">
+                                    <p-iftalabel class="w-full md:w-56">
+                                        <p-select
+                                        formControlName="agent"
+                                        filterBy="nom" [showClear]="true"
+                                        [options]="agents"
+                                        variant="filled" 
+                                        optionLabel="nom" optionValue="nom"
+                                        placeholder="Choisissez un nom" class="w-full md:w-56" />
+                                        <label htmlFor="nomAgent">Nom des agents</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Sélectionnez un agent de chambre</small>
+                            </ng-container>
+
+                            <ng-container>
+
+                                <div class="mb-1 mt-3">
+                                    <p>Sélectionnez la date du jour</p>
+                                </div>
+                                <div class="w-full date-input">
+                                    <p-iftalabel>
+                                        <p-datepicker formControlName="dateNettoyage" inputId="dateNettoyage" dateFormat="dd-mm-yy" showIcon iconDisplay="input" />
+                                        <label htmlFor="dateNettoyage">Date du jour</label>
+                                    </p-iftalabel>
+                                </div>
+                                <small id="categorie-help" class="opacity-50">Date de passage</small>
+                            </ng-container>
+
+                            <ng-container>
+                                <div class="mb-1 mt-3">
+                                    <p>Vous devez laisser un commentaire pour l'agent de chambre</p>
+                                    <label>Commentaire</label>
+                                </div>
+                                <p-iftalabel>
+                                    <textarea pTextarea id="commentaire" formControlName="commentaire" pSize="small" placeholder="Le commentaire peut contenir des informations sur les chambres auxquelles les actions du nettoyage périodique seront appliquées" pStyleClass="w-full"></textarea>
+                                    <label htmlFor="commentaire">Commentaire pour l'agent de chambre</label>
+                                </p-iftalabel>
+                            </ng-container>
+                            
+    
+                        </div>
+                        <div class="flex py-6 gap-2">
+                            <p-button label="Précédent" severity="secondary" (onClick)="activateCallback(5)" />
+                            <p-button label="Enrégistré" (onClick)="onSave()" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+        </p-step-panels>
+        </p-stepper>
+    </form>
+
+
+</p-dialog>

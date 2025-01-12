@@ -1,0 +1,75 @@
+<div class="card profil-form flex justify-content-center">
+    <form class="" autocomplete="false" novalidate [formGroup]="profilForm">
+        <div class="">
+            <p>Cliquez sur la photo de profil pour la changer</p>
+           <div class="icon-user bloc-sup">
+               
+               @if (user.photo) {
+                   @if (url == '') {
+                       <img [src]="user.photo" alt={{user.nom}}>
+                    } @else {
+                        <img [src]="url" alt={{user.nom}}>
+                    }
+                } @else {
+                    @if (url == '') {
+                        <i class="pi pi-user" style="font-size: 1.2rem"></i>
+                    } @else {
+                        <img [src]="url" alt={{user.nom}}>
+                    }
+               }
+               <span class="new-picture">
+                   <label for="profil" class="pick-image"><i class="pi pi-video" style="font-size: 1.5rem"></i></label>
+                   <input hidden formControlName="photo" name="bannerHidden" type="text">
+                   <input id="profil" #profil hidden type="file" (change)="onselectFile($event)">
+               </span>
+            </div>
+           <h3 class="">Profil</h3>
+       </div>
+
+       <div class="profil_input">
+            <div class="flex flex-column gap-1 disabled mb-4">
+                <p-iftalabel>
+                    <input pInputText id="nom" aria-describedby="nom-help" formControlName="nom" class="w-full disabled"  />
+                    <label for="username">Nom</label>
+                </p-iftalabel>
+                <small id="nom-help">Votre nom ne peut être modifier.</small>
+            </div>
+
+            <div class="flex flex-column gap-1 disabled mb-4">
+                <p-iftalabel>
+                    <input pInputText id="email" aria-describedby="email-help" formControlName="email" autocomplete="off" class="w-full disabled" />
+                    <label for="email">Email</label>
+                </p-iftalabel>
+                <small id="email-help">Votre email ne peut être modifier.</small>
+            </div>
+
+            <div class="flex flex-column gap-2">
+                <p-iftalabel>
+                    <p-iconfield>
+                        <p-inputicon class="pi pi-envelope" />
+                        <p-password formControlName="newPassword" inputId="password-reset" [toggleMask]="true" styleClass="w-full" autocomplete="current-password" />
+                    </p-iconfield>
+                    <label htmlFor="password-reset">Nouveau mot de passe</label>
+                </p-iftalabel>  
+                <small id="newPassword-help">Vous pouvez saisir un nouveau mot de passe. Le mot de passe doit être supérieur à 2 caractères.</small>
+            </div>
+       </div>
+       <div class="button-submit mt-4">
+            <p-button label="Mettre à jour" (click)="onSubmitFormProfil()" type="submit" severity="info" />
+        </div>
+   </form>
+
+   <div class="profil-description">
+        <h3>Vous pouvez modifier votre profil selon votre convenance</h3>
+        <p>Vous ne pourrez modifier seulement que votre <b>Mot de passe</b> et votre <b>Photo</b> <br>
+            Les autres informations telles que le <b>Nom</b> et l'<b>Email</b> ne peuvent être modifiées parce qu'elles permettent de vous identifier de façon unique. <br>
+            Si vous constatez une erreur sur vos informations ou si vous voulez modifier votre nom ou votre email, merci de contacter la gouvernante qui se chargera de le faire.
+            <br>
+            Le <b>Mot de passe </b> doit contenir au minimum 3 caractères, faute de quoi, un message vous est envoyé: <b class="color-red-transparent">Le mot de passe doit être supérieur à 2 caractères !</b><br>
+            Si vous ne choisissez aucune <b>Photo</b> ou n'entrez aucun <b>Mot de passe</b> modifié, le bouton de soumission n'a aucun effet. <br>
+            La photo de profil que vous choisirez devra être inférieur à 1 Mo (Méga Octet) en terme de poid, parce que l'image de profil ne s'affiche que de façon très petite. <br>
+            Si vous choisissez une image qui est volumineuse, un message d'erreur vous sera envoyé, vous indiquant que <b class="color-red-transparent">L'image que vous avez choisit est très grande. Merci de choisir une image dont le poid est inférieur à 1 Mo !</b>
+        </p>
+   </div>
+
+</div>

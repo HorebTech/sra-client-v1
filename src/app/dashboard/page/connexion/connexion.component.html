@@ -1,0 +1,136 @@
+<div class="connexion-page relative h-screen">
+    <div class="width-450 center-box-absolute">
+        <h1 class="text-center">S.R.A Contrôle</h1>
+        <div [ngClass]="showConnexionForm ? 'visible' : 'hidden'">
+            <div class="card flex justify-cente bg-white card-connexion">
+                <p-stepper [value]="1" class="w-full">
+                    <p-step-list class="flex">
+                        <div class="flex flex-column">
+                            <div class="flex align-items-center">
+                                <img class="connexion-logo" src="../../../../assets/images/sra.png" alt="">
+                                <p class="font-bold text-xl ml-2 transparent-text">SWEET REST APART HOTEL</p>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-3xl font-medium mb-0">Connexion</p>
+                                <p>Connectez-vous à votre application</p>
+                            </div>
+                        </div>
+                    </p-step-list>
+                    <p-step-panels>
+                        <p-step-panel [value]="1">
+                            <ng-template #content let-activateCallback="activateCallback">
+                                <div class="flex flex-column">
+                                    <form [formGroup]="findUserByNameForm" autocomplete="false" novalidate role="form">
+                                        <p-iftalabel>
+                                            <p-iconfield>
+                                                <p-inputicon class="pi pi-user" />
+                                                <input pInputText id="nom-connexion" formControlName="nom" (ngModelChange)="onNomInputChange($event)" [attr.disabled]="isLoading ? true : null" autocomplete="off" class="w-full"  />
+                                            </p-iconfield>
+                                            <label htmlFor="nom-connexion">Nom de l'utilisateur</label>
+                                        </p-iftalabel>
+                                    </form>
+                                    
+                                </div>
+                                <div class="flex pt-3 justify-content-end">
+                                    <p-button [disabled]="!userFound" label="Suivant" [loading]="isLoading" severity="primary" icon="pi pi-arrow-right" iconPos="right" (onClick)="activateCallback(2)" />
+                                </div>
+                            </ng-template>
+                        </p-step-panel>
+            
+                        <p-step-panel [value]="2">
+                            <ng-template #content let-activateCallback="activateCallback">
+                                <div class="flex flex-column">
+                                    <form [formGroup]="connexionForm" autocomplete="false" novalidate role="form">
+                                        <div>
+    
+                                            <p-iftalabel>
+                                                <p-iconfield>
+                                                    <p-inputicon class="pi pi-envelope" />
+                                                    <input pInputText inputId="email-connexion" formControlName="email" autocomplete="off" class="w-full"  />
+                                                </p-iconfield>
+                                                <label htmlFor="email-connexion">Email de l'utilisateur</label>
+                                            </p-iftalabel>
+                                        </div>
+    
+                                        <div class="mt-3 w-full">
+                                            <p-iftalabel>
+                                                <p-iconfield>
+                                                    <p-inputicon class="pi pi-envelope" />
+                                                    <p-password formControlName="password" inputId="password-connexion" [toggleMask]="true" styleClass="w-full" autocomplete="current-password" />
+                                                </p-iconfield>
+                                                <label htmlFor="password-connexion">Mot de passe</label>
+                                            </p-iftalabel>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="py-1">
+                                    <p-button (onClick)="ChangeToPasswordForm()" label="Mot de passe oublié ?" variant="text" severity="info" />
+                                </div>
+                                <div class="flex pt-1 justify-content-between">
+                                    <p-button label="Retour" severity="secondary" icon="pi pi-arrow-left" (onClick)="activateCallback(1)" />
+                                    <p-button label="Connexion" [disabled]="!connexionForm.valid" [loading]="isLoadingConnexion" severity="primary" (onClick)="connectedUser()" />
+                                </div>
+                            </ng-template>
+                        </p-step-panel>
+                    </p-step-panels>
+                </p-stepper>
+            </div>
+        </div>
+
+
+        <div [ngClass]="showPasswordForm ? 'visible' : 'hidden'">
+            <div class="card flex justify-cente bg-white card-connexion">
+                <p-stepper [value]="3" class="w-full">
+                    <p-step-list class="flex">
+                        <div class="flex flex-column">
+                            <div class="flex align-items-center">
+                                <img class="connexion-logo" src="../../../../assets/images/sra.png" alt="">
+                                <p class="font-bold text-xl ml-2 transparent-text">SWEET REST APART HOTEL</p>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-3xl font-medium mb-0">Réinitialiser le mot de passe</p>
+                                <p>Créez un nouveau mot de passe pour vous connecter à votre application</p>
+                            </div>
+                        </div>
+                    </p-step-list>
+                    <p-step-panels>
+                        <p-step-panel [value]="3">
+                            <ng-template #content let-activateCallback="activateCallback">
+                                <div class="flex flex-column">
+                                    <form [formGroup]="connexionForm" autocomplete="false" novalidate role="form">
+                                        <div>
+    
+                                            <p-iftalabel>
+                                                <p-iconfield>
+                                                    <p-inputicon class="pi pi-envelope" />
+                                                    <input pInputText inputId="email-reset" formControlName="email" autocomplete="off" class="w-full"  />
+                                                </p-iconfield>
+                                                <label htmlFor="email-reset">Email de l'utilisateur</label>
+                                            </p-iftalabel>
+                                        </div>
+    
+                                        <div class="mt-3 w-full">
+                                            <label>Entrez votre nouveau mot de passe.</label>
+                                            <p-iftalabel>
+                                                <p-iconfield>
+                                                    <p-inputicon class="pi pi-envelope" />
+                                                    <p-password formControlName="password" inputId="password-reset" [toggleMask]="true" styleClass="w-full" autocomplete="current-password" />
+                                                </p-iconfield>
+                                                <label htmlFor="password-reset">Nouveau mot de passe</label>
+                                            </p-iftalabel>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="flex pt-3 justify-content-between">
+                                    <p-button (onClick)="ChangeToConnexionForm()" label="Connexion" variant="text" severity="info" />
+                                    <p-button label="Enrégistrer" [disabled]="!connexionForm.valid" severity="primary" (onClick)="connectedUser()" />
+                                </div>
+                            </ng-template>
+                        </p-step-panel>
+                    </p-step-panels>
+                </p-stepper>
+            </div>
+        </div>
+
+    </div>
+</div>

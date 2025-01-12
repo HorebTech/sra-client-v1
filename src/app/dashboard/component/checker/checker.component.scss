@@ -1,0 +1,64 @@
+.checker-card {
+    padding: 5% 20%;
+}
+
+.travaux-bloc {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.panne-objet {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 15%;
+}
+.form-picture {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: column;
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+    left: 0;
+    padding: 5%;
+}
+
+.form-picture .pt-input {
+    width: 100%;
+    border-radius: 10px;
+    padding: 1%;
+}
+
+.form-picture .bloc-image-view {
+    width: 100%;
+    border-radius: 10px;
+    height: 300px;
+}
+.webcam-image {
+    height: 100%;
+}
+.webcam-no-image img {
+    object-fit: contain !important;
+}
+.webcam-image img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.webcam-image{
+    width: 100%;
+}
+.w-full{
+    width: 100%;
+}
+.btn-group {
+    background: red;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+}

@@ -1,0 +1,245 @@
+<div class="grid">
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="card flex flex-column relati">
+            <div class="flex align-items-center text-gray-700">
+                <i class="pi pi-building text-gray-600 text-4xl opacity-60"></i>
+                <div class="flex flex-column">
+                    <h4 class="m-0 text-gray-600 pl-3 font-semibold">Chambre Propres</h4>
+                    <p class="pl-3">Actuellement</p>
+                </div>
+                <div class="ml-auto">
+                    <button 
+                    pTooltip="Actualiser" 
+                    tooltipPosition="bottom"
+                    pButton pRipple type="button" icon="pi pi-sync"
+                        class="p-button-rounded p-button-text" (click)="actualiserChambresPropres($event)"></button>
+                </div>
+            </div>
+            <div class="flex justify-content-between mt-3 flex-wrap relative w-full">
+                <div class="flex flex-column justify-content-center text-left w-full">
+                    <span class="mb-2 pl-2 font-bold text-6xl text-teal-600">{{nosChambresPropres.length}}</span>
+                    <span class="font-medium border-round-xs text-black-alpha-60 p-1 text-sm">Actuellement en cours de nettoyage : <span class="font-bold text-2xl text-teal-900">{{nosChambresEnNettoyages.length}}</span></span>
+                </div>
+                <div class="canvas-accueil-top">
+                    <p-chart type="line" [data]="overviewChartData1" [options]="overviewChartOptions1" [responsive]="true"
+                        height="90px" width="100%"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="card flex flex-column">
+            <div class="flex align-items-center text-gray-700">
+                <i class="pi pi-home text-gray-600 text-4xl opacity-60"></i>
+                <div class="flex flex-column">
+                    <h4 class="m-0 text-gray-600 pl-3 font-semibold">Salles propres</h4>
+                    <p class="pl-3">Actuellement</p>
+                </div>
+                <div class="ml-auto">
+                    <button 
+                    pTooltip="Actualiser" 
+                    tooltipPosition="bottom"
+                    pButton pRipple type="button" icon="pi pi-sync"
+                        class="p-button-rounded p-button-text" (click)="actualiserSallesPropres($event)"></button>
+                </div>
+            </div>
+            <div class="flex justify-content-between mt-3 flex-wrap relative w-full">
+                <div class="flex flex-column justify-content-center text-left w-full">
+                    <span class="mb-2 pl-2 font-bold text-6xl text-orange-600">{{nosSallesPropres.length}}</span>
+                    <span class="font-medium border-round-xs text-black-alpha-60 p-1 text-sm">Actuellement en cours de nettoyage : <span class="font-bold text-2xl text-orange-900">{{nosSallesEnNettoyages.length}}</span></span>
+                </div>
+                <div class="canvas-accueil-top">
+                    <p-chart type="line" [data]="overviewChartData2" [options]="overviewChartOptions2" [responsive]="true"
+                    height="90px" width="100%"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="card flex flex-column">
+            <div class="flex align-items-center text-gray-700">
+                <i class="pi pi-credit-card text-gray-600 text-4xl opacity-60"></i>
+                <div class="flex flex-column">
+                    <h4 class="m-0 text-gray-600 pl-3 font-semibold">Nouveaux Passes</h4>
+                    <p class="pl-3">Présentement</p>
+                </div>
+                <div class="ml-auto">
+                    <button 
+                    pTooltip="Actualiser" 
+                    tooltipPosition="bottom"
+                    pButton pRipple type="button" icon="pi pi-sync"
+                        class="p-button-rounded p-button-text" (click)="actualiserNouveauxPasses($event)"></button>
+                </div>
+            </div>
+            <div class="flex justify-content-between mt-3 flex-wrap relative w-full">
+                <div class="flex flex-column justify-content-center text-left w-full">
+                    <span class="mb-2 pl-2 font-bold text-6xl text-green-600">{{nouveauxPasses.length}}</span>
+                    <span class="font-medium border-round-xs text-black-alpha-60 p-1 text-sm">Actuellement en cours : <span class="font-bold text-2xl text-green-900">{{passesEnCours.length}}</span></span>
+                </div>
+                <div class="canvas-accueil-top">
+                    <p-chart type="line" [data]="overviewChartData3" [options]="overviewChartOptions3" [responsive]="true"
+                    height="90px" width="100%"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-3">
+        <div class="card flex flex-column">
+            <div class="flex align-items-center text-gray-700">
+                <i class="pi pi-wrench text-gray-600 text-4xl opacity-60"></i>
+                <div class="flex flex-column">
+                    <h4 class="m-0 text-gray-600 pl-3 font-semibold">Problèmes enrégistrés</h4>
+                    <p class="pl-3">Aujourd'hui</p>
+                </div>
+                <div class="ml-auto">
+                    <button 
+                    pTooltip="Actualiser" 
+                    tooltipPosition="bottom"
+                    pButton pRipple type="button" icon="pi pi-sync"
+                        class="p-button-rounded p-button-text" (click)="actualiserLesPannes($event)"></button>
+                </div>
+            </div>
+            <div class="flex justify-content-between mt-3 flex-wrap relative w-full">
+                <div class="flex flex-column justify-content-center text-left w-full">
+                    <span class="mb-2 pl-2 font-bold text-6xl text-red-500">{{pannesByDay.length}}</span>
+                    <span class="font-medium border-round-xs text-black-alpha-60 p-1 text-sm">Total des pannes à ce jour : <span class="font-bold text-2xl text-red-900">{{toutesLesPannes.length}}</span></span>
+                </div>
+                <div class="canvas-accueil-top">
+                    <p-chart type="line" [data]="overviewChartData4" [options]="overviewChartOptions4" [responsive]="true"
+                    height="90px" width="100%"></p-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-12 lg:col-6">
+        <div class="card h-full">
+            <div class="flex align-items-center justify-content-between mb-3">
+                <h4 class="m-0 text-gray-600 font-semibold">Les marques avec le plus de problèmes technique</h4>
+            </div>
+            <p-chart type="bar" [data]="panneMarqueData" [options]="panneMarqueOptions" height="400"/>
+        </div>
+    </div>
+
+    <div class="col-12 lg:col-6">
+        <div class="card h-full">
+            <div class="flex align-items-center w-full justify-content-between mb-3">
+                <div class="flex flex-column w-full">
+                    <h4 class="m-0 text-gray-600 font-semibold">Analyse des problèmes techniques</h4>
+                    <p>La chambre avec le plus grand nombre de problèmes techniques</p>
+                </div>
+            </div>
+            <div class="flex justify-content-between flex-mobile">
+                <div class="">
+                    Ce graphique illuste la chambre qui possède le plus grand nombre de problème technique. <br>
+                    Si vous avez deux ou plusieurs chambres avec le même nombre de pannes, vous verrez ces chambres dans le graphique. <br>
+                    <p>Mettez la souris sur une couleur pour avoir le numéro de chambre et le nombre de pannes</p>
+                </div>
+                @if (toutesLesPannesParChambre.length == 0) {
+                    <div class="flex justify-content-between align-content-center contenu-empty">
+                        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+                        <h3 class="p-2 text-center">Aucune panne inscrite pour le moment</h3>
+                    </div>
+                } @else {
+                    <div>
+                        <p-chart type="doughnut" [data]="panneChart" [options]="pannesOptions" />
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card h-full">
+            <div class="flex align-items-center justify-content-between mb-3">
+                <h4 class="m-0 text-gray-600 font-semibold">Nos agents</h4>
+            </div>
+            <p-table [value]="nosAgents" [tableStyle]="{ 'min-width': '50rem' }"
+            [paginator]="true"
+            [rows]="5"
+            >
+                <ng-template #header>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-agent>
+                    <tr>
+                        <td class="relative">
+                            <div *ngIf="agent.connected" class="point-connexion"
+                            pTooltip='{{agent.nom}} est connecté(e)'
+                            tooltipPosition="top"
+                            ></div>
+                            <div *ngIf="!agent.photo" class="icon-user">
+                                <i class="pi pi-user" style="font-size: 1.2rem"></i>
+                            </div>
+                            <img *ngIf="agent.photo" [src]="agent.photo" class="image-profil-adminAccueil">
+                        </td>
+                        <td>{{ agent.nom }}</td>
+                        <td>{{ agent.email }}</td>
+                        <td><p-tag [rounded]="true" icon="pi pi-check" severity="info" [value]="agent.role == 'Agent' ? 'Femme de chambre' : agent.role" /></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card h-full">
+            <div class="flex align-items-center justify-content-between mb-3 w-full flex-mobile">
+                <div class="w-1/3">
+                    <h4 class="m-0 text-gray-600 font-semibold">Analyse des problèmes techniques et détails</h4>
+                </div>
+                <div class="flex input-date-accueil">
+                    <p-button icon="pi pi-search" [rounded]="true" 
+                    pTooltip="Lancez une recherche" 
+                    tooltipPosition="bottom"
+                    severity="info" (onClick)="searchPannes()"/>
+                    <p-floatlabel variant="in">
+                        <p-datepicker [(ngModel)]="rangeDates" inputId="in_label" styleClass="w-full" showIcon iconDisplay="input" selectionMode="range" [showTime]="true" dateFormat="dd-mm-yy" [readonlyInput]="true" [showButtonBar]="true" />
+                        <label for="in_label">Sélectionnez deux dates.</label>
+                    </p-floatlabel>
+                </div>
+            </div>
+
+            <div>
+                <p-table [value]="toutesLesPannesFiltre" *ngIf="!noResult"
+                [paginator]="true"
+                [rows]="10"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                [rowsPerPageOptions]="[5, 10, 20]"
+                >
+                    <ng-template #header>
+                        <tr>
+                            <th>Nom de l'équipement</th>
+                            <th>Marque de l'équipement</th>
+                            <th>Description de la panne</th>
+                            <th>Etat de la panne</th>
+                            <th>Numéro de la chambre</th>
+                            <th>Date d'enrégistrement de la panne</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-panne>
+                            <tr>
+                                <td>{{ panne.nomEquipement }}</td>
+                                <td><p-tag *ngIf="panne.marqueEquipement" icon="pi pi-exclamation-triangle" [value]="panne.marqueEquipement.nom"severity="warn" /></td>
+                                <td>{{ panne.description }}</td>
+                                <td><p-tag [value]="panne.statut.nom"severity="info" /></td>
+                                <td class="font-bold text-lg color-blue">{{ panne.chambreChoisie.chambre.numero }}</td>
+                                <td>{{ panne.creationDate }}</td>
+                            </tr>
+                    </ng-template>
+                </p-table>
+                <div *ngIf="toutesLesPannesFiltre.length == 0" class="contenu-empty">
+                    <img src="../../../../assets/images/empty.svg" class="aucun-contenu" alt="Aucun contnu pour le moment">
+                    <h3>Aucun problème technique enrégistré.</h3>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+</div>

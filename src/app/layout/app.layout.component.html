@@ -1,0 +1,101 @@
+<div class="layout-container" [ngClass]="containerClass">
+
+    <app-topbar></app-topbar>
+    <app-rightmenu></app-rightmenu>
+    <app-sidebar></app-sidebar>
+
+    <div class="layout-content-wrapper">
+        <app-breadcrumb></app-breadcrumb>
+
+        <div class="layout-content">
+            
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div *ngIf="layoutService.state.staticMenuMobileActive" class="layout-mask"></div>
+</div>
+
+<p-dialog
+    header="Conditions d'utilisation"
+    (onHide)="toggleDialogUsedCondition()"
+    [modal]="true"
+    [(visible)]="usedConditionDialogShow"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [maximizable]="true">
+        <p>
+            <b>1. Objet de SRA-Hôtel-Contrôle</b> <br>
+            L'application de gestion de chambres d'hôtel (ci-après « SRA-Hôtel-Contrôle ») est destinée à faciliter la gestion des disponibilités, et des services de nettoyage dans les établissements hôteliers. Elle permet également de suivre les performances et d'accéder à des données analytiques.
+        </p>
+        <p>
+            <b>2. Responsabilité de l'utilisateur</b>
+            L'utilisateur est responsable de l'exactitude et de la mise à jour des informations saisies dans l'Application, notamment concernant le profil, l'état des chambres et des salles. L'éditeur de l'Application ne peut être tenu responsable des erreurs ou omissions résultant d'informations incorrectes ou incomplètes.
+        </p>
+        <p>
+            <b>3. Confidentialité et protection des données</b>
+            L'utilisation de l'Application implique le traitement de données personnelles, comme la photo de profil. L'utilisateur s'engage à respecter les lois en vigueur en matière de protection des données (telles que le RGPD pour l'Union européenne). Les données collectées sont stockées de manière sécurisée et utilisées uniquement dans le cadre des services proposés par l'Application.
+        </p>
+        <p>
+            <b>4. Limitations de responsabilité</b>
+            L'éditeur de l'Application <b>( SInDev )</b> s'efforce de garantir un fonctionnement continu et sans erreur. Cependant, il ne peut être tenu responsable en cas d'interruptions, de dysfonctionnements techniques, ou de pertes de données dues à des facteurs externes, tels que des pannes réseau ou des attaques informatiques.
+        </p>
+        <p>
+            <b>5. Utilisation autorisée</b>
+            L'Application est fournie sous licence d'utilisation et ne peut être reproduite, modifiée, ou redistribuée sans l'accord écrit préalable de <b>( SInDev )</b>. Toute utilisation abusive, notamment à des fins frauduleuses ou non conformes à l'objet de l'Application, entraînera la résiliation immédiate de l'accès.
+        </p>
+        <p>
+            <b>6. Mises à jour et maintenance</b>
+            <b>( SInDev )</b> se réserve le droit de procéder à des mises à jour de l'Application pour améliorer les fonctionnalités ou corriger des bugs. L'utilisateur sera informé de ces mises à jour et pourra être tenu d'accepter les nouvelles conditions pour continuer à utiliser l'Application.
+        </p>
+        <p>
+            <b>7. Résiliation de l'accès</b>
+            L'utilisateur peut mettre fin à son accès à l'Application à tout moment en en informant <b>( SInDev )</b>. De même, <b>( SInDev )</b> se réserve le droit de résilier l'accès en cas de non-respect des présentes conditions d'utilisation.
+        </p>
+        <p>
+            <b>8. Loi applicable et juridiction compétente</b>
+            Les présentes conditions d'utilisation sont régies par la loi n°2013-450 relative à la protection des données à caractère personnel. Tout litige sera soumis à la compétence exclusive des tribunaux du ressort correspondant.
+        </p>
+</p-dialog>
+
+<p-dialog
+    header="A propos"
+    (onHide)="toggleDialogAbout()"
+    [modal]="true"
+    [(visible)]="aboutDialogShow"
+    [style]="{ width: '50rem' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [maximizable]="true">
+        <p>
+            Bienvenue dans <b>SRA-Hôtel-Contrôle</b>, votre solution tout-en-un pour la gestion efficace des services de chambres d'hôtel.
+        </p>
+        <p>
+            Notre application a été conçue pour répondre aux besoins des professionnels de l'hôtellerie, en leur offrant un outil intuitif et performant pour optimiser la gestion des services de nettoyage et de vérification des chambres et des salles.
+        </p>
+        <p>
+            Avec <b>SRA-Hôtel-Contrôle</b>, vous pouvez :
+        </p>
+        <p>
+            Attribuer les différentes tâches aux agents ou femmes de chambres dépuis une interface conviviale.
+            Suivre l'état des chambres et adapter rapidement vos offres.
+            Simplifier la communication avec vos équipes grâce à des outils intégrés de coordination.
+            Accéder à des rapports détaillés pour améliorer vos performances et vos stratégies.
+            Notre objectif est de vous permettre de vous concentrer sur ce qui compte le plus : offrir une expérience exceptionnelle à vos clients tout en améliorant l’efficacité de vos opérations.
+            Que vous dirigiez un hôtel indépendant ou un grand établissement, notre solution s'adapte à vos besoins grâce à des fonctionnalités personnalisables et des mises à jour régulières pour rester à la pointe des technologies de l'hôtellerie.
+            Nous sommes fiers d’accompagner des établissements dans le monde entier et de contribuer à leur succès. Rejoignez notre communauté et découvrez comment notre solution peut transformer votre gestion hôtelière.
+        </p>
+        <p>
+            Pour toute question ou demande d’assistance, n’hésitez pas à nous contacter : <br>
+ <b>Email : </b> {{"support-technique@sindevstat.com"}} <br>
+<b>Téléphone : </b> 
++225 07 07 387255 / 
++225 05 64 115021 / 
++225 27 22 596694 <br>
+
+Merci de votre confiance,
+L’équipe <b>(SInDev)</b>
+        </p>
+
+
+
+
+</p-dialog>

@@ -1,0 +1,140 @@
+<p-confirmDialog />
+<div class="card" id="chambre-table">
+    <p-table [value]="dataList" [tableStyle]="{ 'min-width': '50rem' }"
+    #dt #gFilter
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    paginatorPosition="bottom"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['nom']"
+    selectionMode="single"
+    >
+    <ng-template #caption>
+        <div class="flex justify-content-between">
+            <p-button icon="pi pi-plus" severity="info" label="Ajouter" (onClick)="openSaveObjet()" />
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input
+                    pInputText
+                    #myInput
+                    type="text"
+                    (input)="gFilter.filterGlobal(myInput.value, 'contains')"
+                    placeholder="Recherche"
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+        <ng-template #header>
+            <tr>
+                <th>Numéro</th>
+                <th>Localisation</th>
+                <th>Catégorie</th>
+                <th>Etat</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-chambre>
+            <tr>
+                <td class="font-bold color-blue">{{ chambre.numero }}</td>
+                <td>{{ chambre.localisation }}</td>
+                <td><p-tag severity="info" [value]="chambre.categorie.nom" /></td>
+                <td><p-tag [icon]='chambre.statut.nom == "Propre" ? "pi pi-check" : chambre.statut.nom == "En cours" ? "pi pi-exclamation-triangle" : "pi pi-info-circle"' [severity]='chambre.statut.nom == "Propre" ? "success" : chambre.statut.nom == "En cours" ? "warn" : "info"' [value]='chambre.statut.nom == "Propre" ? "Propre" : chambre.statut.nom == "En cours" ? "En cours de nettoyage" : chambre.statut.nom' />
+                </td>
+                <td>
+                    <div class="button_action">
+                        <p-button 
+                        pTooltip="Modifier la chambre" tooltipPosition="left"
+                        icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="primary" (onClick)="openUpdateObjet(chambre)" />
+                        <p-button 
+                        pTooltip="Supprimer la chambre" tooltipPosition="right"
+                        icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deleteObjet(chambre)" />
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <div *ngIf="dataList.length == 0" class="flex justify-content-between align-content-center contenu-empty">
+        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+        <h3 class="p-2 text-center">Aucune chambre inscrite pour le moment</h3>
+    </div>
+</div>
+
+
+
+<p-dialog
+id="dialogue-user"
+header="{{objetToUpdate?.id ? 'MISE A JOUR' : 'ENREGISTREMENT'}}"
+[modal]="true" 
+[(visible)]="openObjetDialog" 
+[style]="{ width: '40rem' }" 
+[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+[maximizable]="true">
+
+<form [formGroup]="formGroup" autocomplete="off" novalidate role="form" class="w-full">
+    <ng-container>
+        <div class="mb-1">
+            <label>Numéro de la chambre</label>
+        </div>
+        <div class="w-full">
+            <p-iftalabel>
+                <input name="numero" id="numero" pInputText type="text" formControlName="numero" class="w-full" autocomplete="off" />
+                <label htmlFor="numero" class="form-label font-bold">Numero</label>
+            </p-iftalabel>
+        </div>
+    </ng-container>
+
+    <ng-container>
+        <div class="mb-1 mt-3">
+            <label>Localisation de la chambre</label>
+        </div>
+        <div class="w-full">
+            <p-iftalabel>
+                <input name="localisation" id="localisation" pInputText type="text" formControlName="localisation" class="w-full" autocomplete="off" />
+                <label htmlFor="localisation" class="form-label font-bold">Localisation</label>
+            </p-iftalabel>
+        </div>
+    </ng-container>
+
+    <ng-container>
+        <div class="mb-1 mt-3">
+            <label>Catégorie de la chambre</label>
+        </div>
+        <div class="w-full" id="custom-input-select">
+            <p-iftalabel class="w-full md:w-56">
+                <p-select 
+                [filter]="true" filterBy="nom" [showClear]="true" placeholder="Sélectionnez une catégorie"
+                formControlName="categorie" class="w-full" inputId="categorie" [options]="categories" optionLabel="nom" optionValue="nom" styleClass="w-full" />
+                <label htmlFor="categorie">Catégorie</label>
+            </p-iftalabel>
+        </div>
+        <small id="categorie-help" class="opacity-50">Choisissez la catégorie de la chambre</small>
+    </ng-container>
+
+    <ng-container>
+        <div class="mb-1 mt-3">
+            <label>Etat de la chambre</label>
+        </div>
+        <div class="w-full" id="custom-input-select">
+            <p-iftalabel class="w-full md:w-56">
+                <p-select 
+                [filter]="true" filterBy="nom" [showClear]="true" placeholder="Sélectionnez un état"
+                formControlName="statut" class="w-full" inputId="statut" [options]="statuts" optionLabel="nom" optionValue="nom" styleClass="w-full" />
+                <label htmlFor="statut">Etat</label>
+            </p-iftalabel>
+        </div>
+        <small id="statut-help" class="opacity-50">Choisissez l'état de la chambre</small>
+    </ng-container>
+    
+    <div class="button-submit mt-3">
+        <p-button 
+        [disabled]="!formGroup.valid && objetToUpdate?.id == null"
+        pTooltip="Enrégistrer une chambre" tooltipPosition="right"
+        label="Enrégistrer" severity="info" (onClick)="onSave()" />
+    </div>
+</form>
+
+
+</p-dialog>

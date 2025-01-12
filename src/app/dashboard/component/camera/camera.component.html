@@ -1,0 +1,34 @@
+<div class="container h-full">
+    <div *ngIf="isCameraExist; else noCameraExist" class="h-full">
+        <div class="text-center bouton-photo h-full">
+            <div class="mention-buttons h-full">
+                <div class="btn-group h-full">
+                    <p-button (click)="takeSnapshot()" [outlined]="true" [rounded]="true" [text]="true">
+                        <img src="../../../../assets/images/camera.svg" alt="Prendre une photo">
+                    </p-button>
+                    <p-button (click)="changeWebcam(true)" [outlined]="true" [rounded]="true" [text]="true">
+                        <img src="../../../../assets/images/change-cam.svg" alt="Changer de camera">
+                    </p-button>
+                    <!-- <p-button *ngIf="!showWebcam" (click)="onOffWebcame()" [outlined]="true" [rounded]="true" [text]="true">
+                        <img src="../../../../assets/images/active-cam.svg" alt="Activer la camera">
+                    </p-button> -->
+                    <!-- <p-button *ngIf="showWebcam" (click)="onOffWebcame()" [outlined]="true" [rounded]="true" [text]="true">
+                        <img src="../../../../assets/images/desactive-cam.svg" alt="Desactiver la camera">
+                    </p-button> -->
+                </div>
+            </div>
+
+            <webcam [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam" [switchCamera]="nextWebcamObservable" class="webcam"></webcam>
+        </div>
+        <div *ngIf="errors.length > 0 ">
+            <h4>Messages d'erreur</h4>
+            <ul *ngFor="let error of errors">
+                <li>{{error | json}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<ng-template #noCameraExist>
+    Appareil photo non disponible
+</ng-template>

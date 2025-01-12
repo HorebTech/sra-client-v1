@@ -1,0 +1,113 @@
+<p-confirmDialog />
+<div class="card">
+    <p-table [value]="lesObjets" [tableStyle]="{ 'min-width': '50rem' }"
+    #dt #gFilter
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    paginatorPosition="bottom"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['nom', 'lesObjets.chambreChoisie.chambre.numero', 'lesObjets.salleChoisie.salle.numero', 'creationDate']"
+    selectionMode="single"
+    [(selection)]="selectedObjet"
+    >
+    <ng-template #caption>
+        <div class="flex justify-content-between">
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input
+                    pInputText
+                    #myInput
+                    type="text"
+                    (input)="gFilter.filterGlobal(myInput.value, 'contains')"
+                    placeholder="Recherche"
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+        <ng-template #header>
+            <tr>
+                <th>Photo de l'objet trouvé</th>
+                <th>Description</th>
+                <th>Numero de chambre</th>
+                <th>Numero de salle</th>
+                <th>Etat de l'objet</th>
+                <th>Date d'enrégistrement</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-objet>
+            <tr>
+                <td class="image-illustrative">
+                    <p-image 
+                    [src]="'https://api.sindevstat.com/uploads/'+objet?.photo"
+                    alt="Photo du problème technique"
+                    width="250" 
+                    pTooltip="Agrandir l'image" 
+                    tooltipPosition="bottom"
+                    [preview]="true" />
+                </td>
+                <td>{{ objet?.description }}</td>
+                <td>{{ objet?.chambreChoisie?.chambre.numero }}</td>
+                <td>{{ objet?.salleChosie?.salle.numero }}</td>
+                <td><p-tag [value]="objet.statut.nom"severity="info" /></td>
+                <td>{{ objet.creationDate }}</td>
+                <td>
+                    <p-button
+                    pTooltip="Modifier l'objet" 
+                    tooltipPosition="bottom" 
+                    icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" (onClick)="updateObjet(objet)" />
+                    <p-button
+                    pTooltip="Supprimer l'objet" 
+                    tooltipPosition="bottom" 
+                    icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deleteObjet(objet)" />
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <div *ngIf="lesObjets.length == 0" class="flex justify-content-between align-content-center contenu-empty">
+        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+        <h3 class="p-2 text-center">Aucun objet inscrit pour le moment</h3>
+    </div>
+</div>
+
+
+<p-dialog header="Mise à jour de l'objet trouvé" [modal]="true" [(visible)]="objetVisibility" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <form [formGroup]="objetFormGroup" autocomplete="off" novalidate role="form" class="w-full">
+        <ng-container>
+            <div class="mb-1">
+                <label>Description de l'objet</label>
+            </div>
+            <div class="w-full">
+                <p-iftalabel>
+                    <input name="description" id="description" pInputText type="text" formControlName="description" class="w-full" autocomplete="off" />
+                    <label htmlFor="description" class="form-label font-bold">Description</label>
+                </p-iftalabel>
+            </div>
+        </ng-container>
+    
+        <ng-container>
+            <div class="mb-1 mt-3">
+                <label>Etat de l'ojet</label>
+            </div>
+            <div class="w-full" id="custom-input-select">
+                <p-iftalabel class="w-full md:w-56">
+                    <p-select 
+                    [filter]="true" filterBy="nom" [showClear]="true" placeholder="Sélectionnez un état"
+                    formControlName="statut" class="w-full" inputId="statut" [options]="statuts" optionLabel="nom" optionValue="nom" styleClass="w-full" />
+                    <label htmlFor="statut">Etat</label>
+                </p-iftalabel>
+            </div>
+            <small id="statut-help" class="opacity-50">Modifiez l'état de l'objet</small>
+        </ng-container>
+        
+        <div class="button-submit mt-3">
+            <p-button
+            [disabled]="!objetFormGroup.valid"
+            pTooltip="Enrégistrer les modifications" tooltipPosition="right"
+            label="Enrégistrer" severity="info" (onClick)="onSave()" />
+        </div>
+    </form>
+</p-dialog>

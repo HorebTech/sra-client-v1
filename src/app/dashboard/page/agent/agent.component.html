@@ -1,0 +1,160 @@
+<div class="page-agent">
+
+    <p-card header="Liste de tous mes passes du jour">
+        <p class="m-0">
+            Les différents passes qui vous sont attribués par la gouvernante s'affichent sur cet écran. Veuillez cliquer sur un passe pour débuter la vérification.
+        </p>
+    </p-card>
+
+    <div class="group-skeleton" *ngIf="loading">
+        <div class="skeleton p-4">
+            <p-skeleton styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton width="10rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton width="5rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton height="2rem" styleClass="mb-2" borderRadius="16px" />
+            <p-skeleton width="10rem" height="4rem" borderRadius="16px" />
+        </div>
+    </div>
+
+    <div class="mes-passes-agent margin-top">
+        @if (mesPassesDuJour.length == 0) {
+            <div class="passe_empty" *ngIf="!loading">
+                <h2>Vous n'avez aucun passe à ce jour.</h2>
+                <img class="empty-image" src="../../../../assets/images/empty.svg" alt="no content">
+            </div>
+        } @else {
+            @for (passe of mesPassesDuJour; track passe; let index = $index) {
+                @for (chambre of passe.chambreChoisie; track $index) {
+                    @if (loading) {
+                        <p-skeleton styleClass="mb-2" />
+                        <p-skeleton width="10rem" styleClass="mb-2" />
+                        <p-skeleton width="5rem" styleClass="mb-2" />
+                        <p-skeleton height="2rem" styleClass="mb-2" />
+                        <p-skeleton width="10rem" height="4rem" />
+                    } @else {
+                        @if (chambre.chambre?.statut?.nom !== "Propre") {
+                            <a class="passe-card" (click)="startVerification(passe.id!, chambre)">
+                                <img src="../../../../assets/images/card.svg" alt="card background">
+                                <h3>Passe N° {{passe.id}}</h3>
+                                <div class="passe-content">
+                                    <p><b>Chambre : </b>{{chambre.chambre?.numero}}</p>
+                                    <p><b>Etat de la chambre : </b><b>{{chambre.chambre?.statut?.nom}}</b></p>
+                                    <p><b>Localisation : </b>{{chambre.chambre?.localisation}}</p>
+                                </div>
+                            </a>
+                        }
+                    }
+                }
+            }
+        }
+    </div>
+</div>
+
+
+<p-drawer 
+position="full"
+[(visible)]="viewTableVerification"
+[closable]="false"
+>
+    <ng-template #header>
+        <div class="image-profil-checker">
+            @if (userConnected.photo == null || !userConnected.photo) {
+                <i class="pi pi-user" style="font-size: 1.2rem"></i>
+            } @else {
+                <div class="image-profil-checker-photo">
+                    <img [src]="userConnected.photo" alt="photo de profil" />
+                </div>
+            }
+            <span class="font-semibold text-xl ml-2">
+                {{userConnected.nom}}
+            </span>
+        </div>
+        <div class="flex-justify ml-5">
+            <span class="pi pi-calendar design-icon"></span>
+            <p class="ml-2 font-semibold">{{monPasse.dateNettoyage}}</p>
+        </div>
+        <div class="flex-justify ml-5">
+            <span class="pi pi-home design-icon"></span>
+            <p class="ml-2 font-semibold">Chambre {{maChambreChoisie.chambre?.numero}}</p>
+        </div>
+        <div class="flex-justify ml-5 relative">
+            <a class="flex cursor-pointer" pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein"
+            leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple>
+            <p-badge [severity]="objetsFounded.length > 0 ? 'success' : 'danger'" value="{{objetsFounded.length}}"></p-badge>
+            <p class="ml-2 font-semibold mb-0">Objet(s)</p>
+            </a>
+
+            <div class="liste_objets ng-hidden card">
+                @if (objetsFounded.length == 0) {
+                    <div class="flex justify-content-between align-content-center contenu-empty">
+                        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+                        <h3 class="p-2 text-center">Aucun Objet trouvé pour le moment</h3>
+                    </div>
+                } @else {
+                    <ul class="list-none p-0 m-0">
+                        @for (item of objetsFounded; track $index) {
+                            <li class="p-1 border-bottom-1 border-100">
+                                <div class="flex align-items-center">
+                                    <div class="flex ml-3 justify-content-between align-items-center flex-1">
+                                        <div class="flex flex-column mb-1">
+                                            <span class="text-sm">{{item.description}}</span>
+                                        </div>
+                                        <a (dblclick)="removeObjet(item)"
+                                            class="text-sm line-height-3 cursor-pointer"><i class="pi pi-trash text-red-600"></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+
+
+        <div class="flex-justify ml-5 relative">
+            <a class="flex cursor-pointer" pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein"
+            leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple>
+                <p-badge [severity]="pannesFounded.length > 0 ? 'success' : 'danger'" value="{{pannesFounded.length}}"></p-badge>
+                <p class="ml-2 font-semibold mb-0">Panne(s)</p>
+            </a>
+            <div class="liste_objets ng-hidden card">
+                @if (pannesFounded.length == 0) {
+                    <div class="flex justify-content-between align-content-center contenu-empty">
+                        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+                        <h3 class="p-2 text-center">Aucune panne inscrite pour le moment</h3>
+                    </div>
+                } @else {
+                    <ul class="list-none p-0 m-0">
+                        @for (item of pannesFounded; track $index) {
+                            <li class="p-1 border-bottom-1 border-100">
+                                <div class="flex align-items-center">
+                                    <div class="flex ml-3 justify-content-between align-items-center flex-1">
+                                        <div class="flex flex-column mb-1">
+                                            <span class="font-bold block mb-1">{{item.nomEquipement}}</span>
+                                            <span class="text-sm block mb-1">{{item.description}}</span>
+                                            <span class="text-sm font-bold">{{item.marqueEquipement}}</span>
+                                        </div>
+                                        <a (dblclick)="removePanne(item)"
+                                            class="text-sm line-height-3 cursor-pointer"><i class="pi pi-trash text-red-600"></i></a>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+        <p-button label="Terminer la vérification" (click)="confirm($event)" class="float-right" severity="success" />
+        <p-confirmPopup>
+            <ng-template #content let-message>
+                <div
+                    class="flex flex-col items-center w-full gap-4 border-b border-surface-200 dark:border-surface-700 p-4 mb-4 pb-0"
+                >
+                    <i [class]="message.icon" class="!text-6xl text-primary-500"></i>
+                    <p>{{ message.message }}</p>
+                </div>
+            </ng-template>
+        </p-confirmPopup>
+    </ng-template>
+    <app-checker />
+</p-drawer>

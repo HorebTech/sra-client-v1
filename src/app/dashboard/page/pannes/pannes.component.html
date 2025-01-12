@@ -1,0 +1,139 @@
+<p-confirmDialog />
+<div class="card">
+    <p-table [value]="lesPannes" [tableStyle]="{ 'min-width': '50rem' }"
+    #dt #gFilter
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    paginatorPosition="bottom"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['nomEquipement', 'marqueEquipement', 'chambreChoisie.chambre.numero', 'salleChoisie.salle.numero', 'creationDate']"
+    selectionMode="single"
+    [(selection)]="selectedPanne"
+    >
+    <ng-template #caption>
+        <div class="flex justify-content-between">
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input
+                    pInputText
+                    #myInput
+                    type="text"
+                    (input)="gFilter.filterGlobal(myInput.value, 'contains')"
+                    placeholder="Recherche"
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+        <ng-template #header>
+            <tr>
+                <th>Photo de l'appareil en panne</th>
+                <th>Nom</th>
+                <th>Marque</th>
+                <th>Description</th>
+                <th>Numero de chambre</th>
+                <th>Etat</th>
+                <th>Date d'enrégistrement</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-panne>
+            <tr>
+                <td class="image-illustrative">
+                    <p-image 
+                    [src]="'https://api.sindevstat.com/uploads/'+panne?.photo"
+                    alt="Photo du problème technique"
+                    width="250" 
+                    pTooltip="Agrandir l'image" 
+                    tooltipPosition="bottom"
+                    [preview]="true" />
+                </td>
+                <td>{{ panne.nomEquipement }}</td>
+                <td><p-tag *ngIf="panne.marqueEquipement" icon="pi pi-exclamation-triangle" [value]="panne.marqueEquipement.nom"severity="warn" /></td>
+                <td>{{ panne.description }}</td>
+                <td>{{ panne?.chambreChoisie?.chambre.numero }}</td>
+                <td><p-tag [value]="panne.statut.nom"severity="info" /></td>
+                <td>{{ panne.creationDate }}</td>
+                <td>
+                    <p-button
+                    pTooltip="Modifier les informations sur la panne" 
+                    tooltipPosition="bottom" 
+                    icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" (onClick)="updatePanne(panne)" />
+                    <p-button 
+                    pTooltip="Supprimer la panne" 
+                    tooltipPosition="bottom" 
+                    icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deletePanne(panne)" /></td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <div *ngIf="lesPannes.length == 0" class="flex justify-content-between align-content-center contenu-empty">
+        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+        <h3 class="p-2 text-center">Aucune panne inscrite pour le moment</h3>
+    </div>
+</div>
+
+
+<p-dialog header="Mise à jour des informations du problème technique" [modal]="true" [(visible)]="panneVisibility" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [maximizable]="true">
+    <form [formGroup]="panneFormGroup" autocomplete="off" novalidate role="form" class="w-full">
+        <ng-container>
+            <div class="mb-1">
+                <label>Nom de l'équipement trouvé</label>
+            </div>
+            <div class="w-full">
+                <p-iftalabel>
+                    <input name="nomEquipement" id="nomEquipement" pInputText type="text" formControlName="nomEquipement" class="w-full" autocomplete="off" />
+                    <label htmlFor="nomEquipement" class="form-label font-bold">Nom de l'équipement en panne</label>
+                </p-iftalabel>
+            </div>
+        </ng-container>
+
+        <ng-container>
+            <div class="mb-1 mt-3">
+                <label>Marque de l'équipement en panne</label>
+            </div>
+            <div class="w-full">
+                <p-iftalabel>
+                    <p-select [options]="nosMarques" formControlName="marqueEquipement" placeholder="Sélectionnez une marque" [editable]="true" optionLabel="nom" optionValue="nom" class="w-full md:w-56" />
+                    <label htmlFor="marqueEquipement" class="form-label font-bold">Marque de l'équipement en panne</label>
+                </p-iftalabel>
+            </div>
+        </ng-container>
+
+        <ng-container>
+            <div class="mb-1 mt-3">
+                <label>Description de l'équipement</label>
+            </div>
+            <div class="w-full">
+                <p-iftalabel>
+                    <input name="description" id="description" pInputText type="text" formControlName="description" class="w-full" autocomplete="off" />
+                    <label htmlFor="description" class="form-label font-bold">Description</label>
+                </p-iftalabel>
+            </div>
+        </ng-container>
+    
+        <ng-container>
+            <div class="mb-1 mt-3">
+                <label>Etat de l'équipement</label>
+            </div>
+            <div class="w-full" id="custom-input-select">
+                <p-iftalabel class="w-full md:w-56">
+                    <p-select 
+                    [filter]="true" filterBy="nom" [showClear]="true" placeholder="Sélectionnez un état"
+                    formControlName="statut" class="w-full" inputId="statut" [options]="statuts" optionLabel="nom" optionValue="nom" styleClass="w-full" />
+                    <label htmlFor="statut">Etat</label>
+                </p-iftalabel>
+            </div>
+            <small id="statut-help" class="opacity-50">Modifiez l'état de l'équipement</small>
+        </ng-container>
+        
+        <div class="button-submit mt-3">
+            <p-button
+            [disabled]="!panneFormGroup.valid"
+            pTooltip="Enrégistrer les modifications" tooltipPosition="right"
+            label="Enrégistrer" severity="info" (onClick)="onSave()" />
+        </div>
+    </form>
+</p-dialog>

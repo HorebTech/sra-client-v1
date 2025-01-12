@@ -1,0 +1,96 @@
+.profil-form form {
+    margin-right: 30px;
+}
+.bloc-sup i.pi-user {
+    font-size: 40px !important;
+    height: 70px;
+    width: 70px;
+    background: linear-gradient(45deg, #dbdbdb, transparent);
+    border-radius: 50px;
+    display: flex
+    ;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.icon-user.bloc-sup {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+}
+.new-picture {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    transition: 0.4s ease;
+    cursor: pointer;
+}
+
+.pick-image{
+    cursor: pointer;
+}
+
+.icon-user.bloc-sup:hover .new-picture{
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    background: rgba(56, 56, 56, 0.368627451);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.bloc-sup img {
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.profil_input {
+    width: 400px;
+}
+
+.disabled:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.123);
+    z-index: 1;
+}
+.profil-form {
+    padding: 5%;
+}
+.disabled {
+    position: relative;
+}
+.profil-description{
+    background-color: #eeeeee48;
+    padding: 3%;
+    border-radius: 5px;
+}
+
+@media(max-width: 1300px) {
+    .profil-form {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .profil-form form {
+        width: 100%;
+        padding: 3%;
+    }
+    .profil_input{
+        width: 100%;
+    }
+}

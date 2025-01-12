@@ -1,0 +1,134 @@
+<p-confirmDialog />
+<div class="card">
+    <p-table [value]="utilisateurs" [tableStyle]="{ 'min-width': '50rem' }"
+    #dt #gFilter
+    [paginator]="true"
+    [rows]="10"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    paginatorPosition="bottom"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['nom', 'email', 'role.description']"
+    selectionMode="single"
+    [(selection)]="selectedUtilisateurs"
+    >
+    <ng-template #caption>
+        <div class="flex justify-content-between">
+            <p-button icon="pi pi-plus" severity="info" label="Ajouter" (onClick)="openSaveUser()" />
+            <p-iconfield iconPosition="left" class="ml-auto">
+                <p-inputicon>
+                    <i class="pi pi-search"></i>
+                </p-inputicon>
+                <input
+                    pInputText
+                    #myInput
+                    type="text"
+                    (input)="gFilter.filterGlobal(myInput.value, 'contains')"
+                    placeholder="Recherche"
+                />
+            </p-iconfield>
+        </div>
+    </ng-template>
+        <ng-template #header>
+            <tr>
+                <th>Photo</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Connecté ?</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-utilisateur>
+            <tr>
+                <td><img class="photo-agent" *ngIf="utilisateur.photo" [src]="utilisateur.photo" alt="Photo de l'agent"></td>
+                <td>{{ utilisateur.nom }}</td>
+                <td>{{ utilisateur.email }}</td>
+                <td>{{ utilisateur.role == "Agent" ? 'Femme de chambre' : utilisateur.role }}</td>
+                <td><p-tag [icon]='utilisateur.connected ? "pi pi-check" : "pi pi-times"' [severity]='utilisateur.connected ? "success" : "danger"' [value]='utilisateur.connected ? "Oui" : "Non"' /></td>
+                <td>
+                    <div class="button_action">
+                        <p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="primary" (onClick)="openUpdateUser(utilisateur)" />
+                        <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (onClick)="deleteUser(utilisateur)" />
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <div *ngIf="utilisateurs.length == 0" class="flex justify-content-between align-content-center contenu-empty">
+        <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
+        <h3 class="p-2 text-center">Aucun utilisateur inscrit pour le moment</h3>
+    </div>
+</div>
+
+
+<!-- Créer et mettre à jour un utilisateur -->
+
+<p-dialog
+id="dialogue-user"
+header="{{userToUpdated?.id ? 'MISE A JOUR' : 'ENREGISTREMENT'}}"
+[modal]="true" 
+[(visible)]="openUtilisateurDialog" 
+[style]="{ width: '40rem' }" 
+[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+[maximizable]="true">
+
+<form [formGroup]="formGroup" autocomplete="off" novalidate role="form" class="w-full">
+    <ng-container>
+        <div class="mb-1">
+            <label>Nom de l'agent</label>
+        </div>
+        <div class="w-full">
+            <p-iftalabel>
+                <input name="nom" id="nom" pInputText type="text" formControlName="nom" class="w-full" autocomplete="off" />
+                <label htmlFor="nom" class="form-label font-bold">Nom</label>
+            </p-iftalabel>
+            <small id="nom-help" class="opacity-50">Entrez le nom de l'utilisateur (Le nom doit être unique)</small>
+        </div>
+    </ng-container>
+    <ng-container>
+        <div class="mb-1 mt-3">
+            <label>Email de l'agent</label>
+        </div>
+        <div class="w-full">
+            <p-iftalabel>
+                <input name="email" id="email" pInputText type="email" formControlName="email" class="w-full" autocomplete="new-email" />
+                <label htmlFor="email" class="form-label font-bold">Email</label>
+            </p-iftalabel>
+            <small id="email-help" class="opacity-50">{{"Veuillez saisir l'adresse mail (nom@sra-hotel.com)"}}</small>
+        </div>
+    </ng-container>
+    <ng-container>
+        <div class="mb-1 mt-3">
+            <label>Mot de passe de l'agent</label>
+        </div>
+        <div class="w-full">
+            <p-iftalabel>
+                <p-password name="password" id="password" type="password" formControlName="password" [toggleMask]="true" autocomplete="new-password" class="w-full" />
+                <label htmlFor="password">Mot de passe</label>
+            </p-iftalabel>
+            <small id="password-help" class="opacity-50">Veuillez saisir le mot de passe pour l'utilisateur (L'utilisateur pourra changer le mot de passe lorsqu'il se connectera)</small>
+        </div>
+    </ng-container>
+    <ng-container>
+        <div class="mb-1 mt-3">
+            <label>Rôle de l'agent</label>
+        </div>
+        <div class="w-full" id="custom-input-select">
+            <p-iftalabel class="w-full md:w-56">
+                <p-select formControlName="role" class="w-full" inputId="role" [options]="roles" optionLabel="name" optionValue="code" styleClass="w-full" />
+                <label htmlFor="role">Rôle</label>
+            </p-iftalabel>
+        </div>
+        <small id="role-help" class="opacity-50">Choisissez le rôle de l'agent</small>
+    </ng-container>
+    <div class="button-submit mt-3">
+        <p-button 
+        [disabled]="!formGroup.valid && userToUpdated?.id == null"
+        pTooltip="Enrégistrer l'utilisateur" tooltipPosition="right"
+        label="Enrégistrer" severity="info" (onClick)="onSave()" />
+    </div>
+</form>
+
+
+</p-dialog>
+

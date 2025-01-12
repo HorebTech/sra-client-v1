@@ -1,0 +1,140 @@
+<div class="layout-topbar">
+    <div class="layout-topbar-start">
+        <a class="layout-topbar-logo" routerLink="/">
+            <img src="assets/images/logo.png" width="100" height="46" class="layout-topbar-logo-full">
+        </a>
+
+        <a #menuButton class="layout-menu-button" (click)="onMenuButtonClick()" pRipple>
+             <img src="../../assets/images/menuBar.svg" alt="bar open menu">
+        </a>
+
+        <a #mobileMenuButton class="layout-topbar-mobile-button" (click)="onMobileTopbarMenuButtonClick()" pRipple>
+            <i class="pi pi-ellipsis-v"></i>
+        </a>
+    </div>
+
+    <div class="layout-topbar-end">
+        <div class="layout-topbar-actions-start"></div>
+        <div class="layout-topbar-actions-end">
+            <ul class="layout-topbar-items">
+                <li>
+                    <!-- <a pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein"
+                       leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple>
+
+                        <i class="pi pi-bell button-connected" pBadge severity="warn"></i>
+                    </a> -->
+                    <div class="ng-hidden">
+                        <!-- <ul class="list-none p-0 m-0">
+                            <li class="px-3 py-1">
+                                <span>You have <b>4</b> new notifications</span>
+                            </li>
+                            <li class="p-3">
+                                <div class="flex align-items-center">
+                                    <img src="assets/demo/images/avatar/avatar-1.png"/>
+                                    <div class="flex flex-column ml-3 flex-1">
+                                        <div class="flex align-items-center justify-content-between mb-1">
+                                            <span class="font-bold">KOUTO Kail</span>
+                                            <small>42 mins ago</small>
+                                        </div>
+                                        <span
+                                            class="text-sm line-height-3">How to write content about your photographs?</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="p-3">
+                                <div class="flex align-items-center">
+                                    <img src="assets/demo/images/avatar/avatar-2.png"/>
+                                    <div class="flex flex-column ml-3 flex-1">
+                                        <div class="flex align-items-center justify-content-between mb-1">
+                                            <span class="fs-small font-bold">Cameron Williamson</span>
+                                            <small>48 mins ago</small>
+                                        </div>
+                                        <span
+                                            class="text-sm line-height-3">Start a blog to reach your creative peak.</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="p-3">
+                                <div class="flex align-items-center">
+                                    <img src="assets/demo/images/avatar/avatar-3.png"/>
+                                    <div class="flex flex-column ml-3 flex-1">
+                                        <div class="flex align-items-center justify-content-between mb-1">
+                                            <span class="fs-small font-bold">Anna Miles</span>
+                                            <small>1 day ago</small>
+                                        </div>
+                                        <span class="text-sm line-height-3">Caring is the new marketing</span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="p-3">
+                                <div class="flex align-items-center">
+                                    <img src="assets/demo/images/avatar/avatar-4.png"/>
+                                    <div class="flex flex-column ml-3 flex-1">
+                                        <div class="flex align-items-center justify-content-between mb-1">
+                                            <span class="fs-small font-bold">Arlene Mccoy</span>
+                                            <small>4 day ago</small>
+                                        </div>
+                                        <span
+                                            class="text-sm line-height-3">Starting your traveling blog with Vasco.</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul> -->
+                    </div>
+                </li>
+                <li>
+                    <a pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein"
+                       leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple>
+
+                       @if (userConnected.photo == null || !userConnected.photo) {
+                        <i class="pi pi-user" style="font-size: 1.2rem"></i>
+                        } @else {
+                            <img [src]="userConnected.photo" alt="photo de profil" class="w-2rem h-2rem petit-photo-profil" />
+                        }
+                    </a>
+                    <div class="ng-hidden">
+                        <ul class="list-none p-0 m-0">
+                            <li>
+                                <a 
+                                pTooltip="Modifiez votre profil" tooltipPosition="left"
+                                routerLink="/dashboard/profil" class="cursor-pointer flex align-items-center hover:surface-hover transition-duration-150 transition-all px-3 py-2"
+                                   pRipple>
+                                    <i class="pi pi-user mr-2"></i>
+                                    <span>Mon profil</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                pTooltip="Afficher les conditions d'utilisation" tooltipPosition="left" 
+                                (click)="showUsedCondition()" class="cursor-pointer flex align-items-center hover:surface-hover transition-duration-150 transition-all px-3 py-2"
+                                   pRipple>
+                                    <i class="pi pi-file-o mr-2"></i>
+                                    <span>Conditions d'utilisations</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                pTooltip="A propos de SRA-Hôtel-Contrôle" tooltipPosition="left"
+                                (click)="showAbout()" class="cursor-pointer flex align-items-center hover:surface-hover transition-duration-150 transition-all px-3 py-2"
+                                   pRipple>
+                                    <i class="pi pi-compass mr-2"></i>
+                                    <span>A propos de SRA-Hotel Contrôle</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                pTooltip="Déconnexion" tooltipPosition="left"
+                                (click)="onLogout()" class="cursor-pointer flex align-items-center hover:surface-hover transition-duration-150 transition-all px-3 py-2"
+                                   pRipple>
+                                    <i class="pi pi-power-off mr-2"></i>
+                                    <span>Déconnexion</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
