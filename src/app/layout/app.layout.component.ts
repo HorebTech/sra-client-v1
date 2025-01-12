@@ -14,7 +14,7 @@ import { AppTopbarComponent } from './app.topbar.component';
 import { LayoutService } from './service/app.layout.service';
 import { AuthResponse } from '../models/User.model';
 import { Store } from '@ngrx/store';
-import { getTodayDate } from '../dashboard/utils';
+import { convertirDate, getTodayDate } from '../dashboard/utils';
 import { DialogModel } from '../models/Dialog.model';
 import { aboutDialog, usedConditionDialog } from '../store/Dialog/Dialog.action';
 import { getCategories } from '../store/Categorie/Categorie.action';
@@ -45,6 +45,9 @@ export class AppLayoutComponent implements OnDestroy, OnInit {
     topbarMenuOutsideClickListener: any;
 
     menuProfileOutsideClickListener: any;
+
+    dateDuJour!: string;
+    dateDuJourConvertie!: string;
 
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 

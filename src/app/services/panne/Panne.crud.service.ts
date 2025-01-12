@@ -36,8 +36,13 @@ export abstract class PanneCrud<T, ID> implements PanneCrudOperations<T, ID> {
         return this.http.get<PanneInterface[]>(this.uri + 'get-all/' +dateDebut +"/"+ dateFin);
     }
 
-    getRoomByDates(dateDebut: string, dateFin: string): Observable<PanneInterface[]> {
-        return this.http.get<PanneInterface[]>(this.uri + 'get-all/room/'+dateDebut +"/"+ dateFin);
+    getRoomByDates(): Observable<any[]> {
+        const formattedDateFin = new Date().toISOString().split('T')[0]; // Format 'yyyy-MM-dd'
+        return this.http.get<any[]>(this.uri + 'get-all/room/1970-01-02 04:00:00/' + formattedDateFin +'00:00:00');
+    }
+
+    getMaxPannesRooms(): Observable<any[]> {
+        return this.http.get<any[]>(this.uri + 'max-pannes-room');
     }
 
     getByStateAndOther(statut: string, numero: string): Observable<PanneInterface[]> {

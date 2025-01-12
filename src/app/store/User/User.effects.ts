@@ -53,11 +53,16 @@ export class UserEffect {
                             const dateDuJourConvertie = convertirDate(date); 
                             this.tokenDecoded.next(tokenDecode);
 
+                            const _dates = {
+                                dateDebut: "1970-01-02 04:00:00",
+                                dateFin: dateDuJourConvertie
+                            }
+
                             this.service.SetLocalstorage(_userdata);
                             this.route.navigate(['/']);
                             if(_userdata.role !== "Agent"){
                                 this.route.navigate(['/dashboard']);
-                                getPannesInRoom({dateDebut:"1970-01-02 04:00:00", dateFin: dateDuJourConvertie});
+                                getPannesInRoom();
                             } else {
                                 this.route.navigate(['/dashboard/agent']);
                                 findNewAndCurrentPasses({agent: _userdata.nom as string, date: today})

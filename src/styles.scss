@@ -109,7 +109,16 @@ p-floatlabel.p-floatlabel.p-floatlabel-over {
 .not-found-page .card img {
     opacity: .5;
 }
-
+.layout-breadcrumb-container .layout-breadcrumb ol li:nth-child(3) .indicateur-texte {
+    color: #006fc9;
+    opacity: 1;
+}
+.indicateur-texte {
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: .5;
+}
 .layout-topbar-logo {
     width: 100%;
     display: block;
@@ -389,7 +398,10 @@ p-dialog#objet-panne .p-dialog-content {
     color: white;
     border: 1px solid #626262;
 }
-
+.pannes p-select input.p-select-label {
+    cursor: default;
+    color: white;
+}
 .pannes .p-select-list-container {
     background: transparent !important;
     color: white;
@@ -397,6 +409,8 @@ p-dialog#objet-panne .p-dialog-content {
 .border-right {
     border-right: 1px solid #cacaca;
     padding-right: 10px;
+    background: linear-gradient(45deg, #d4d4d4, transparent);
+    padding: 5px 10px;
 }
 .pannes .p-select-list-container ulm {
     background: transparent !important;
@@ -454,18 +468,6 @@ p-dialog#objet-panne .p-dialog-content {
     display: block;
 }
 
-// .input-select .p-dropdown {
-//     width: 100%;
-//     border-radius: 5px;
-// }
-
-// #dialogue-user .p-dialog {
-//     height: 625px;
-// }
-
-// .custom-button {
-//     min-width: 2rem;
-// }
 .image-illustrative img {
     height: 50px;
     width: 50px;
@@ -514,23 +516,7 @@ p-iftalabel.p-iftalabel {
 .color-blue {
     color: #00578b;
 }
-// .canvas-accueil-top {
-//     position: absolute;
-//     width: 100%;
-//     left: 0;
-//     bottom: 0;
-// }
-// .canvas-accueil-top canvas {
-//     width: 100% !important;
-//     opacity: .15;
-// }
 
-// .image-profil-adminAccueil {
-//     height: 35px;
-//     width: 35px;
-//     object-fit: cover;
-//     border-radius: 50px;
-// }
 .icon-user {
     height: 35px;
     width: 35px;
@@ -548,4 +534,42 @@ p-iftalabel.p-iftalabel {
     border-radius: 50px;
     position: absolute;
     top: 15px;
+}
+
+.p-drawer-full .p-drawer-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    background: #006fc9;
+    padding: 5px;
+    color: white;
+}
+
+@media(max-width: 1500px) {
+    .graphe-accueil{
+        width: 50%;
+    }
+}
+
+@media(max-width: 767px) {
+    .graphe-accueil{
+        width: 100%;
+    }
+    .image-profil-checker-photo img {
+        height: 40px !important;
+        width: 40px !important;
+    }
+    .p-drawer-full .p-drawer-header {
+        font-size: 1.5vw;
+    }
+    .p-drawer-full .p-drawer-header button.p-ripple.p-button.p-component.p-button-success {
+        font-size: 1.5vw;
+    }
+    .custom-flex{
+        display: flex;
+        align-items: center;
+    }
+    .ml-custom {
+        margin-left: -2px !important;
+    }
 }

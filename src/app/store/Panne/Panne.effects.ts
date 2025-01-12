@@ -2,7 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { catchError, of, switchMap } from "rxjs";
 import { showToast } from "../Common/App.action";
-import { counterByMarque, counterByMarqueSuccess, deletePanne, getAllPannes, getAllPannesByDates, getAllPannesByDatesSuccess, getAllPannesByDay, getAllPannesByDaySuccess, getAllPannesByStateAndOther, getAllPannesByStateAndOtherSuccess, getPanne, getPannesFail, getPannesInRoom, getPannesInRoomSuccess, getPannesSuccess, getPanneSuccess, savePanne, updatePanne, updatePanneState } from "./Panne.action";
+import { counterByMarque, counterByMarqueSuccess, deletePanne, getAllPannes, getAllPannesByDates, getAllPannesByDatesSuccess, getAllPannesByDay, getAllPannesByDaySuccess, getAllPannesByStateAndOther, getAllPannesByStateAndOtherSuccess, getPanne, getPannesFail, getPannesInRoom, getPannesInRoomSuccess, getPannesSuccess, getPanneSuccess, getTopChambre, getTopChambreSuccess, savePanne, updatePanne, updatePanneState } from "./Panne.action";
 import { PanneController } from "../../services/panne/Panne.controller.service";
 import { getObjetsFail } from "../Objet/Objet.action";
 
@@ -109,9 +109,23 @@ export class PanneEffects {
         this.action$.pipe(
             ofType(getPannesInRoom),
             switchMap((action) => {
-                return this.service.GetRoomByDates(action.dateDebut, action.dateFin).pipe(
+                return this.service.GetRoomByDates().pipe(
                     switchMap((data) => {
                         return of(getPannesInRoomSuccess({ result: data }))
+                    }),
+                    catchError((_error) => of(getPannesFail({errormessage: _error.error.message})))
+                )
+            })
+        )
+    );
+
+    _getTopChambre = createEffect(() =>
+        this.action$.pipe(
+            ofType(getTopChambre),
+            switchMap((action) => {
+                return this.service.GetMaxPannesRommes().pipe(
+                    switchMap((data) => {
+                        return of(getTopChambreSuccess({ result: data }))
                     }),
                     catchError((_error) => of(getPannesFail({errormessage: _error.error.message})))
                 )

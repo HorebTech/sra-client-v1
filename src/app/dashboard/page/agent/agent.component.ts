@@ -164,12 +164,42 @@ export class AgentComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeObjet(objet: ObjetInterface): void {
-    this.store.dispatch(deleteObjet({ id: objet.id as string }));
+  removeObjet(objet: ObjetInterface, e: any): void {
+    this.confirmationService.confirm({
+      target: e.target as EventTarget,
+      message: 'Voulez-vous supprimer cet élément ?',
+      icon: 'pi pi-exclamation-circle',
+      accept: () => {
+        this.store.dispatch(deleteObjet({ id: objet.id as string }));
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Oups !',
+          detail: 'Suppression annulée',
+          life: 3000
+        });
+      }
+    });
   }
 
-  removePanne(panne: PanneInterface): void {
-    this.store.dispatch(deletePanne({ id: panne.id as string }));
+  removePanne(panne: PanneInterface, e: any): void {
+    this.confirmationService.confirm({
+      target: e.target as EventTarget,
+      message: 'Voulez-vous supprimer cet élément ?',
+      icon: 'pi pi-exclamation-circle',
+      accept: () => {
+        this.store.dispatch(deletePanne({ id: panne.id as string }));
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Oups !',
+          detail: 'Suppression annulée',
+          life: 3000
+        });
+      }
+    });
   }
 
 }

@@ -38,8 +38,13 @@ export class PanneController {
             takeUntil(this.destroy$));
         }
 
-    GetRoomByDates(dateDebut: string, dateFin: string) {
-        return this.service.getRoomByDates(dateDebut, dateFin).pipe(
+    GetRoomByDates() {
+        return this.service.getRoomByDates().pipe(
+            takeUntil(this.destroy$));
+        }
+
+    GetMaxPannesRommes() {
+        return this.service.getMaxPannesRooms().pipe(
             takeUntil(this.destroy$));
         }
 

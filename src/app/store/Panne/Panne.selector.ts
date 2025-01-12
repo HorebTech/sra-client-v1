@@ -24,3 +24,6 @@ export const getGlobalPannesByDates = createSelector(panneState, (state) => {
 export const getGlobalPannesInRoom = createSelector(panneState, (state) => {
     return state.globalPanneInRoom;
 });
+export const findTopChambre = createSelector(panneState, (state) => {
+    return state.globalPanneInRoom;
+});

@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { PanneState } from "./Panne.state";
-import { counterByMarqueSuccess, deletePanne, getAllPannesByDatesSuccess, getAllPannesByDay, getAllPannesByDaySuccess, getAllPannesByStateAndOtherSuccess, getPannesFail, getPannesInRoomSuccess, getPannesSuccess, getPanneSuccess, savePanne, updatePanne } from "./Panne.action";
+import { counterByMarqueSuccess, deletePanne, getAllPannesByDatesSuccess, getAllPannesByDay, getAllPannesByDaySuccess, getAllPannesByStateAndOtherSuccess, getPannesFail, getPannesInRoomSuccess, getPannesSuccess, getPanneSuccess, getTopChambreSuccess, savePanne, updatePanne } from "./Panne.action";
 
 
 const _PanneReducer = createReducer(PanneState,
@@ -34,6 +34,13 @@ const _PanneReducer = createReducer(PanneState,
         }
     }),
     on(getPannesInRoomSuccess, (state, action) => {
+        return {
+            ...state,
+            globalPanneInRoom: action.result,
+            errormessage: ""
+        }
+    }),
+    on(getTopChambreSuccess, (state, action) => {
         return {
             ...state,
             globalPanneInRoom: action.result,

@@ -10,8 +10,8 @@ import { PasseInterface } from '../../../models/Passe.model';
 import { AuthResponse, Utilisateur } from '../../../models/User.model';
 import { LayoutService } from '../../../layout/service/app.layout.service';
 import { convertirDate, getTodayDate } from '../../utils';
-import { counterByMarque, getAllPannes, getAllPannesByDates, getAllPannesByDay, getPannesInRoom } from '../../../store/Panne/Panne.action';
-import { findCountedByMarque, getGlobalPannes, getGlobalPannesByDates, getGlobalPannesByDay, getGlobalPannesInRoom } from '../../../store/Panne/Panne.selector';
+import { counterByMarque, getAllPannes, getAllPannesByDates, getAllPannesByDay, getPannesInRoom, getTopChambre } from '../../../store/Panne/Panne.action';
+import { findCountedByMarque, findTopChambre, getGlobalPannes, getGlobalPannesByDates, getGlobalPannesByDay, getGlobalPannesInRoom } from '../../../store/Panne/Panne.selector';
 import { getAllChambresEnNettoyages, getAllChambresPropres } from '../../../store/Chambre/Chambre.action';
 import { findGlobalChambresEnNettoyage, findGlobalChambresPropres } from '../../../store/Chambre/Chambre.selector';
 import { getAllSallesEnNettoyage, getAllSallesPropres } from '../../../store/Salle/Salle.action';
@@ -82,7 +82,9 @@ platformId = inject(PLATFORM_ID);
   toutesLesPannesParNombre : any[] = [];
   toutesLesPannesParChambre : any[] = [];
   dateDuJour!: string;
-  dateDuJourConvertie!: string;
+
+
+  top3Chambre: any;
 
   countedByMarque!: string[];
   countedByNumber!: number[]
@@ -95,7 +97,8 @@ platformId = inject(PLATFORM_ID);
         protected messageService: MessageService,
         protected confirmationService: ConfirmationService,
         protected router: Router,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+
       ) {
           this.subscription = this.layoutService.configUpdate$
             .pipe(debounceTime(25))
@@ -111,6 +114,7 @@ platformId = inject(PLATFORM_ID);
     ngOnInit() {
         this.loadUserData();
         this.setupCharts();
+        this.setOverviewColors();
     
         // Gérer l'utilisateur connecté
         this.store.select(getUserConnected).pipe(takeUntil(this.unsubscribe$)).subscribe(item => {
@@ -121,6 +125,7 @@ platformId = inject(PLATFORM_ID);
             this.handleNonAgentRole();
           }
         });
+        this.store.dispatch(getTopChambre());
       }
     
       ngOnDestroy() {
@@ -146,35 +151,25 @@ platformId = inject(PLATFORM_ID);
           }
         });
     
-        this.initializeDates();
         this.fetchData();
         this.fetchAdditionalData();
       }
     
-      private initializeDates() {
-        this.dateDuJour = getTodayDate();
-        this.dateDuJourConvertie = convertirDate(new Date());
-        // console.log(this.dateDuJourConvertie);
-      }
-    
       private fetchData() {
-        const dateDebut = "1970-01-02 04:00:00";
-        const dateFin = this.dateDuJourConvertie || new Date().toISOString().replace('T', ' ').substring(0, 19);
-    
-        if (!dateFin) {
-          return;
-        } else {
-            this.store.dispatch(getPannesInRoom({ dateDebut, dateFin }));
-        }
-    
-        this.store.select(getGlobalPannesInRoom).pipe(takeUntil(this.unsubscribe$)).subscribe({
+
+        this.store.select(findTopChambre).pipe(takeUntil(this.unsubscribe$)).subscribe({
           next: (data: any[]) => {
+            this.top3Chambre = data;
             if (data && data.length > 0) {
               this.toutesLesPannesParNombre = [];
               this.toutesLesPannesParChambre = [];
+
               data.forEach(item => {
-                this.toutesLesPannesParNombre.push(item[1]);
-                this.toutesLesPannesParChambre.push(item[0]);
+                this.toutesLesPannesParNombre.push(item.nombreDePannes);
+                this.toutesLesPannesParChambre.push(item.numeroChambre);
+                console.log(this.toutesLesPannesParNombre);
+                console.log(this.toutesLesPannesParChambre);
+                
               });
               this.panneChartInit();
             }
@@ -183,6 +178,7 @@ platformId = inject(PLATFORM_ID);
       }
     
       private fetchAdditionalData() {
+   
         this.store.dispatch(getAllChambresPropres({ etat: "Propre" }));
         this.store.select(findGlobalChambresPropres).pipe(takeUntil(this.unsubscribe$)).subscribe(
           chambres => this.nosChambresPropres = chambres
@@ -236,6 +232,12 @@ platformId = inject(PLATFORM_ID);
       private setupCharts() {
         this.overviewChartData1 = this.createOverviewChartData([50, 64, 32, 24, 18, 27, 20, 36, 30]);
         this.overviewChartOptions1 = this.createOverviewChartOptions();
+        this.overviewChartData2 = this.createOverviewChartData([11, 30, 52, 35, 39, 20, 14, 18, 29]);
+        this.overviewChartOptions2 = this.createOverviewChartOptions();
+        this.overviewChartData3 = this.createOverviewChartData([20, 29, 39, 36, 45, 24, 28, 20, 15]);
+        this.overviewChartOptions3 = this.createOverviewChartOptions();
+        this.overviewChartData4 = this.createOverviewChartData([30, 39, 50, 21, 33, 18, 10, 24, 20]);
+        this.overviewChartOptions4 = this.createOverviewChartOptions();
       }
     
       private createOverviewChartData(data: number[]): any {
@@ -346,7 +348,7 @@ platformId = inject(PLATFORM_ID);
             labels: this.countedByMarque, // Labels dynamiques
             datasets: [
                 {
-                    label: 'Nombre de pannes',
+                    label: 'Nombre de problèmes techniques par Marque',
                     backgroundColor: 'rgba(128, 128, 128, 0.7)',
                     hoverBackgroundColor: 'rgba(128, 128, 128, 1)',
                     hoverBorderColor: 'rgba(128, 128, 128, 1)',

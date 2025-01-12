@@ -26,6 +26,9 @@ export const GET_ALL_PANNES_BY_DATES_SUCCESS="[panne page] Récupérer toutes le
 export const GET_PANNES_IN_ROOM="[panne page] Récupérer toutes les pannes avec filtre!";
 export const GET_PANNES_IN_ROOM_SUCCESS="[panne page] Récupérer toutes les pannes avec filtre!";
 
+export const TOP_CHAMBRE="[panne page] Récupérer la chambre avec le plus de panne!";
+export const TOP_CHAMBRE_SUCCESS="[panne page] Récupérer la chambre avec le plus de panne succès!";
+
 export const GET_PANNE_SUCCESS="[panne page] Récupération d'une panne réussit!";
 export const GET_PANNES_SUCCESS="[panne page] Récupération de toutes les pannes réussit!";
 export const GET_PANNES_FAIL="[panne page] Récupération de toutes les pannes échouée!";
@@ -48,8 +51,11 @@ export const getAllPannesByDaySuccess = createAction(GET_ALL_PANNES_BY_DAY_SUCCE
 export const getAllPannesByDates = createAction(GET_ALL_PANNES_BY_DATES, props<{dateDebut: string, dateFin: string}>());
 export const getAllPannesByDatesSuccess = createAction(GET_ALL_PANNES_BY_DATES_SUCCESS, props<{result: PanneInterface[]}>());
 
-export const getPannesInRoom = createAction(GET_PANNES_IN_ROOM, props<{dateDebut: string, dateFin: string}>());
+export const getPannesInRoom = createAction(GET_PANNES_IN_ROOM);
 export const getPannesInRoomSuccess = createAction(GET_PANNES_IN_ROOM_SUCCESS, props<{result: any[]}>());
+
+export const getTopChambre = createAction(TOP_CHAMBRE);
+export const getTopChambreSuccess = createAction(TOP_CHAMBRE_SUCCESS, props<{result: any[]}>());
 
 export const counterByMarque = createAction(COUNTER_BY_MARQUE);
 export const counterByMarqueSuccess = createAction(COUNTER_BY_MARQUE_SUCCESS, props<{result: PanneCountMarque[]}>());

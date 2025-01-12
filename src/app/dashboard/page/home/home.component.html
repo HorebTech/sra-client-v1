@@ -1,5 +1,5 @@
 <div class="grid">
-    <div class="col-12 md:col-6 lg:col-3">
+    <div class="col-12 md:col-6 lg:col-3 graphe-accueil">
         <div class="card flex flex-column relati">
             <div class="flex align-items-center text-gray-700">
                 <i class="pi pi-building text-gray-600 text-4xl opacity-60"></i>
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 md:col-6 lg:col-3">
+    <div class="col-12 md:col-6 lg:col-3 graphe-accueil">
         <div class="card flex flex-column">
             <div class="flex align-items-center text-gray-700">
                 <i class="pi pi-home text-gray-600 text-4xl opacity-60"></i>
@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 md:col-6 lg:col-3">
+    <div class="col-12 md:col-6 lg:col-3 graphe-accueil">
         <div class="card flex flex-column">
             <div class="flex align-items-center text-gray-700">
                 <i class="pi pi-credit-card text-gray-600 text-4xl opacity-60"></i>
@@ -83,7 +83,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 md:col-6 lg:col-3">
+    <div class="col-12 md:col-6 lg:col-3 graphe-accueil">
         <div class="card flex flex-column">
             <div class="flex align-items-center text-gray-700">
                 <i class="pi pi-wrench text-gray-600 text-4xl opacity-60"></i>
@@ -135,7 +135,7 @@
                     Si vous avez deux ou plusieurs chambres avec le même nombre de pannes, vous verrez ces chambres dans le graphique. <br>
                     <p>Mettez la souris sur une couleur pour avoir le numéro de chambre et le nombre de pannes</p>
                 </div>
-                @if (toutesLesPannesParChambre.length == 0) {
+                @if (top3Chambre.length == 0) {
                     <div class="flex justify-content-between align-content-center contenu-empty">
                         <img src="../../../../assets/images/empty.svg" class="aucun-objet" alt="Aucun objet pour le moment">
                         <h3 class="p-2 text-center">Aucune panne inscrite pour le moment</h3>
